@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Thám Hiểm Xa Lộ Thông Tin Internet - Tin Học 6 (Bài 7) | Trường TH&THCS Sơn Trung</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --secondary: #10b981;
+    --accent: #f59e0b;
+    --danger: #ef4444;
+    --purple: #8b5cf6;
+    --bg: #f0f7ff;
+    --card-bg: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --border-color: #cbd5e1;
+    --shadow-sticker: 0 6px 0 #cbd5e1, 0 10px 20px rgba(15, 23, 42, 0.08);
+    --shadow-btn: 0 4px 0 rgba(0,0,0,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Times New Roman", Times, serif; }
+  body {
+    background-color: var(--bg);
+    background-image: radial-gradient(#bfdbfe 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    color: var(--text-main);
+    font-size: 20px;
+    line-height: 1.5;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+  .top-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    color: #ffffff;
+    padding: 12px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .school-badge { display: flex; flex-direction: column; }
+  .school-badge .school-name { font-weight: bold; font-size: 20px; }
+  .school-badge .teacher-name { font-size: 17px; color: #dbeafe; }
+  .header-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .btn-icon {
+    background: rgba(255,255,255,0.18);
+    border: 2px solid rgba(255,255,255,0.4);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .container { max-width: 1020px; margin: 24px auto; padding: 0 16px; }
+  .card {
+    background: var(--card-bg);
+    border: 3px solid #93c5fd;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--shadow-sticker);
+    margin-bottom: 24px;
+  }
+  h1 { font-size: 32px; color: #1e3a8a; text-align: center; margin-bottom: 12px; }
+  h2 { font-size: 26px; color: #1d4ed8; margin-bottom: 14px; }
+  h3 { font-size: 22px; color: #0f172a; margin-bottom: 10px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 14px;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: var(--shadow-btn);
+    text-align: center;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-success { background: var(--secondary); color: #fff; }
+  .btn-warning { background: var(--accent); color: #fff; }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-purple { background: var(--purple); color: #fff; }
+  .btn-outline { background: #fff; color: var(--primary); border: 2px solid var(--primary); box-shadow: none; }
+  .btn-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 20px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .hero-box { text-align: center; padding: 10px 0; }
+  .game-tag {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 12px;
+    border: 2px solid #93c5fd;
+  }
+  .story-box { background: #f8fafc; border-left: 6px solid var(--primary); padding: 16px; border-radius: 12px; text-align: left; margin: 16px 0; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-weight: bold; margin-bottom: 6px; color: #1e3a8a; }
+  .form-control { width: 100%; padding: 12px 16px; font-size: 20px; border: 2px solid #94a3b8; border-radius: 12px; background: #fff; }
+  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 12px; margin-top: 10px; }
+  .char-card { border: 3px solid #cbd5e1; border-radius: 16px; padding: 12px; text-align: center; cursor: pointer; background: #f8fafc; }
+  .char-card.selected { border-color: var(--primary); background: #eff6ff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
+  .char-avatar { font-size: 42px; display: block; margin-bottom: 4px; }
+  .char-name { font-weight: bold; font-size: 19px; color: #1e3a8a; }
+  .char-desc { font-size: 16px; color: var(--text-muted); line-height: 1.3; margin-top: 4px; }
+  .hud-bar {
+    background: #ffffff;
+    border: 3px solid #60a5fa;
+    border-radius: 18px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .hud-profile { display: flex; align-items: center; gap: 12px; }
+  .hud-avatar { font-size: 38px; background: #eff6ff; padding: 6px 10px; border-radius: 14px; border: 2px solid #93c5fd; }
+  .hud-stats { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .stat-pill { background: #f1f5f9; padding: 6px 14px; border-radius: 12px; font-weight: bold; border: 2px solid #cbd5e1; display: flex; align-items: center; gap: 6px; }
+  .xp-bar-wrap { width: 120px; height: 14px; background: #e2e8f0; border-radius: 999px; overflow: hidden; border: 1px solid #94a3b8; }
+  .xp-bar-fill { height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6); width: 0%; transition: width 0.4s; }
+  .stage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+  .stage-card { border: 3px solid #93c5fd; border-radius: 18px; padding: 18px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; }
+  .stage-card.locked { background: #f1f5f9; border-color: #cbd5e1; opacity: 0.8; }
+  .stage-card.completed { border-color: var(--secondary); background: #f0fdf4; }
+  .stage-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+  .stage-icon { font-size: 38px; }
+  .stage-stars { font-size: 22px; letter-spacing: 2px; }
+  .stage-badge { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 16px; font-weight: bold; background: #dbeafe; color: #1e40af; margin-bottom: 8px; }
+  .quiz-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px dashed #cbd5e1; }
+  .progress-track { width: 100%; height: 16px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-bottom: 18px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #2563eb, #10b981); transition: width 0.3s ease; }
+  .question-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .meta-tag { font-size: 16px; padding: 4px 12px; border-radius: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; font-weight: bold; }
+  .question-text { font-size: 22px; font-weight: bold; color: #0f172a; margin-bottom: 18px; background: #f8fafc; padding: 16px; border-radius: 14px; border: 2px solid #e2e8f0; }
+  .options-list { display: flex; flex-direction: column; gap: 12px; }
+  .option-btn { text-align: left; padding: 14px 18px; border: 3px solid #cbd5e1; border-radius: 14px; background: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+  .option-btn.selected { border-color: var(--primary); background: #dbeafe; font-weight: bold; }
+  .option-btn.correct { border-color: var(--secondary); background: #dcfce7; color: #14532d; font-weight: bold; }
+  .option-btn.wrong { border-color: var(--danger); background: #fee2e2; color: #7f1d1d; }
+  .option-btn.eliminated { opacity: 0.35; text-decoration: line-through; pointer-events: none; }
+  .powerup-bar { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; padding: 12px; background: #fffbeb; border: 2px dashed #f59e0b; border-radius: 14px; align-items: center; }
+  .powerup-btn { padding: 8px 14px; border-radius: 10px; border: 2px solid #f59e0b; background: #fff; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  .powerup-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .feedback-box { margin-top: 20px; padding: 18px; border-radius: 16px; border: 3px solid; display: none; }
+  .feedback-box.correct { background: #f0fdf4; border-color: #10b981; }
+  .feedback-box.wrong { background: #fef2f2; border-color: #ef4444; }
+  .feedback-title { font-size: 22px; font-weight: bold; margin-bottom: 8px; }
+  .feedback-detail p { margin-bottom: 8px; }
+  .tabs-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; border-bottom: 3px solid #cbd5e1; padding-bottom: 10px; }
+  .tab-btn { padding: 10px 16px; border-radius: 12px; border: 2px solid #cbd5e1; background: #f8fafc; font-size: 18px; font-weight: bold; cursor: pointer; }
+  .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .kpi-card { background: #f8fafc; border: 2px solid #93c5fd; border-radius: 16px; padding: 16px; text-align: center; }
+  .kpi-value { font-size: 30px; font-weight: bold; color: var(--primary); }
+  .kpi-label { font-size: 17px; color: var(--text-muted); font-weight: bold; }
+  .table-responsive { width: 100%; overflow-x: auto; margin-top: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 18px; }
+  th, td { border: 1px solid #cbd5e1; padding: 10px 12px; text-align: left; }
+  th { background: #1e3a8a; color: #fff; }
+  tr:nth-child(even) { background: #f8fafc; }
+  .bar-chart-row { margin-bottom: 14px; }
+  .bar-chart-label { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 4px; }
+  .bar-chart-track { width: 100%; height: 24px; background: #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; }
+  .bar-wrong { background: #ef4444; height: 100%; transition: width 0.4s; }
+  .bar-right { background: #10b981; height: 100%; transition: width 0.4s; }
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); display: none; justify-content: center; align-items: center; z-index: 200; padding: 16px; }
+  .modal-backdrop.active { display: flex; }
+  .modal-box { background: #fff; border-radius: 20px; max-width: 720px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 24px; border: 3px solid var(--primary); }
+  .sync-badge { font-size: 16px; padding: 4px 10px; border-radius: 8px; background: #e0f2fe; color: #0369a1; font-weight: bold; }
+  @media print {
+    .top-header, .btn, .tabs-nav, .no-print { display: none !important; }
+    body { background: #fff; font-size: 16px; }
+    .card { box-shadow: none; border: 1px solid #000; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top-header">
+  <div class="school-badge">
+    <span class="school-name">TRƯỜNG TH&THCS SƠN TRUNG</span>
+    <span class="teacher-name">Giáo viên phụ trách: Võ Thị Thanh • Hệ thống Trò chơi học tập tương tác</span>
+  </div>
+  <div class="header-controls">
+    <span id="syncStatusBadge" class="sync-badge">💾 Lưu cục bộ</span>
+    <button class="btn-icon" onclick="toggleSound()" id="btnSound">🔊 Âm thanh: Bật</button>
+    <button class="btn-icon" onclick="goHome()">🏠 Trang chủ</button>
+  </div>
+</header>
+
+<div class="container">
+  <section id="screen-home" class="screen active">
+    <div class="card hero-box">
+      <div class="game-tag" id="ui-subject-tag"></div>
+      <h1 id="ui-game-title"></h1>
+      <p id="ui-lesson-subtitle" style="font-weight: bold; color: #334155; margin-bottom: 12px;"></p>
+      <div class="story-box">
+        <p><strong>📜 Cốt truyện nhiệm vụ:</strong> <span id="ui-story-text"></span></p>
+        <p style="margin-top: 8px;"><strong>🎯 Mục tiêu hành trình:</strong> <span id="ui-goal-text"></span></p>
+      </div>
+      <div id="resume-banner" style="display:none; background:#ecfdf5; border:2px solid #10b981; border-radius:14px; padding:14px; margin-bottom:16px;">
+        <p style="font-weight:bold; color:#065f46;">👋 Chào mừng <span id="resume-name"></span> (<span id="resume-class"></span>) quay trở lại!</p>
+        <p style="font-size:18px; color:#047857;">Tiến độ hiện tại: <span id="resume-progress"></span></p>
+      </div>
+      <div class="btn-grid">
+        <button class="btn btn-success" id="btn-continue" style="display:none;" onclick="resumeGame()">▶️ CHƠI TIẾP</button>
+        <button class="btn btn-primary" onclick="openProfileSetup()">🚀 BẮT ĐẦU HÀNH TRÌNH MỚI</button>
+        <button class="btn btn-warning" onclick="openReviewVault()">📚 KHO ÔN TẬP (<span id="vault-count-home">0</span>)</button>
+        <button class="btn btn-outline" onclick="openModal('modal-guide')">📖 HƯỚNG DẪN CÁCH CHƠI</button>
+        <button class="btn btn-purple" onclick="openTeacherAuth()">📊 THỐNG KÊ GIÁO VIÊN</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-profile" class="screen">
+    <div class="card">
+      <h2>🧑‍🚀 THIẾT LẬP HỒ SƠ NHÂN VẬT</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+        <div class="form-group">
+          <label for="inp-name">Họ và tên học sinh (*)</label>
+          <input type="text" id="inp-name" class="form-control" placeholder="Ví dụ: Đinh Văn An">
+        </div>
+        <div class="form-group">
+          <label for="inp-class">Lớp (*)</label>
+          <select id="inp-class" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label for="inp-code">Mã học sinh (nếu có)</label>
+          <input type="text" id="inp-code" class="form-control" placeholder="Ví dụ: HS01">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Chọn nhân vật đồng hành (10 nhân vật) (*)</label>
+        <div class="char-grid" id="char-grid"></div>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+        <button class="btn btn-success" onclick="confirmProfile()">✅ XÁC NHẬN & VÀO BẢN ĐỒ</button>
+        <button class="btn btn-outline" onclick="goHome()">⬅️ Quay lại</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="player-hud" class="hud-bar" style="display:none;">
+    <div class="hud-profile">
+      <div class="hud-avatar" id="hud-avatar">🕵️</div>
+      <div>
+        <div style="font-weight:bold; color:#1e3a8a;" id="hud-name"></div>
+        <div style="font-size:16px; color:#475569;" id="hud-title"></div>
+      </div>
+    </div>
+    <div class="hud-stats">
+      <div class="stat-pill">❤️ <span id="hud-hearts">5</span>/5</div>
+      <div class="stat-pill">🪙 <span id="hud-gold">0</span></div>
+      <div class="stat-pill">⭐ <span id="hud-stars">0</span></div>
+      <div class="stat-pill">
+        <span>⚡ Lv.<span id="hud-level">1</span></span>
+        <div class="xp-bar-wrap"><div class="xp-bar-fill" id="hud-xp-bar"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="screen-map" class="screen">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
+        <h2>🗺️ BẢN ĐỒ HÀNH TRÌNH CÁC TRẠM THỬ THÁCH</h2>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-warning" onclick="openReviewVault()">📚 Kho ôn tập (<span id="vault-count-map">0</span>)</button>
+          <button class="btn btn-outline" onclick="openModal('modal-badges')">🏅 Huy hiệu</button>
+          <button class="btn btn-success" id="btn-finish-journey" style="display:none;" onclick="showFinalSummary()">🏆 Xem tổng kết</button>
+        </div>
+      </div>
+      <div class="stage-grid" id="stage-grid"></div>
+    </div>
+  </section>
+
+  <section id="screen-quiz" class="screen">
+    <div class="card">
+      <div class="quiz-top">
+        <div>
+          <strong id="quiz-stage-title" style="color:#1e3a8a; font-size:22px;"></strong>
+          <span id="quiz-counter" style="margin-left:10px; font-weight:bold; color:#2563eb;"></span>
+        </div>
+        <button class="btn btn-outline" style="padding:6px 14px; font-size:18px;" onclick="exitStageToMap()">🗺️ Về bản đồ</button>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="quiz-progress-bar"></div></div>
+      <div class="powerup-bar">
+        <strong style="color:#b45309;">🎒 Cửa hàng trợ giúp:</strong>
+        <button class="powerup-btn" id="pu-hint" onclick="usePowerup('hint')">📜 Cuộn gợi ý (15🪙)</button>
+        <button class="powerup-btn" id="pu-5050" onclick="usePowerup('5050')">✂️ Kéo 50:50 (25🪙)</button>
+        <button class="powerup-btn" id="pu-skip" onclick="usePowerup('skip')">👟 Giày bỏ qua (30🪙)</button>
+        <button class="powerup-btn" id="pu-heal" onclick="usePowerup('heal')">🧪 Bình hồi tim (35🪙)</button>
+      </div>
+      <div id="hint-display" style="display:none; background:#fef3c7; border:2px solid #f59e0b; padding:12px; border-radius:12px; margin-bottom:14px;">
+        <strong>💡 Gợi ý:</strong> <span id="hint-text"></span>
+      </div>
+      <div class="question-meta">
+        <span class="meta-tag" id="q-code"></span>
+        <span class="meta-tag" id="q-topic"></span>
+        <span class="meta-tag" id="q-level"></span>
+        <span class="meta-tag" id="q-type-label"></span>
+      </div>
+      <div class="question-text" id="question-text"></div>
+      <div id="answer-area"></div>
+      <div style="margin-top: 20px; display:flex; gap:12px; flex-wrap:wrap;">
+        <button class="btn btn-primary" id="btn-submit-answer" onclick="submitAnswer()">✔️ XÁC NHẬN ĐÁP ÁN</button>
+        <button class="btn btn-success" id="btn-next-question" style="display:none;" onclick="nextQuestion()">➡️ CÂU TIẾP THEO</button>
+      </div>
+      <div class="feedback-box" id="feedback-box">
+        <div class="feedback-title" id="fb-title"></div>
+        <div class="feedback-detail" id="fb-content"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-vault" class="screen">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+        <h2>📚 KHO ÔN TẬP CÁ NHÂN & HỒI TIM</h2>
+        <button class="btn btn-outline" onclick="goMap()">⬅️ Quay lại</button>
+      </div>
+      <p style="margin-bottom:14px; color:#334155;">Giải đúng mỗi câu sai trong Kho ôn tập sẽ hồi lại <strong>+1 ❤️ Tim</strong>.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+        <select id="vault-filter-topic" class="form-control" style="max-width:300px;" onchange="renderVaultList()">
+          <option value="ALL">Tất cả chủ đề kiến thức</option>
+        </select>
+      </div>
+      <div id="vault-list"></div>
+    </div>
+  </section>
+
+  <section id="screen-summary" class="screen">
+    <div class="card">
+      <h1>🏆 TỔNG KẾT HÀNH TRÌNH CHINH PHỤC</h1>
+      <div id="summary-header-info" style="background:#eff6ff; border:2px solid #93c5fd; border-radius:16px; padding:16px; margin-bottom:18px;"></div>
+      <div class="kpi-grid" id="summary-kpis"></div>
+      <h3>📊 Kết quả từng trạm thử thách</h3>
+      <div id="summary-stages" style="margin: 14px 0 20px 0;"></div>
+      <div style="background:#f0fdf4; border:2px solid #10b981; border-radius:16px; padding:16px; margin-bottom:18px;">
+        <h3>💬 Nhận xét sư phạm dành riêng cho em</h3>
+        <div id="summary-pedagogy"></div>
+      </div>
+      <div class="btn-grid">
+        <button class="btn btn-warning" onclick="openReviewVault()">📚 VÀO KHO ÔN TẬP</button>
+        <button class="btn btn-primary" onclick="goMap()">🗺️ XEM LẠI BẢN ĐỒ</button>
+        <button class="btn btn-danger" onclick="confirmResetGame()">🔄 CHƠI LẠI TỪ ĐẦU</button>
+        <button class="btn btn-outline" onclick="goHome()">🏠 QUAY VỀ TRANG CHỦ</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-teacher" class="screen">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+        <div>
+          <h2>📊 TRANG QUẢN LÝ VÀ THỐNG KÊ GIÁO VIÊN</h2>
+          <p style="font-size:17px; color:#475569;">Giáo viên: <strong>Võ Thị Thanh</strong> • Đơn vị: <strong>Trường TH&THCS Sơn Trung</strong></p>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;" class="no-print">
+          <button class="btn btn-primary" style="padding:8px 14px; font-size:17px;" onclick="fetchTeacherDataFromCloud()">☁️ Đồng bộ Google Sheets</button>
+          <button class="btn btn-outline" style="padding:8px 14px; font-size:17px;" onclick="openModal('modal-config')">⚙️ Cấu hình Web App</button>
+          <button class="btn btn-danger" style="padding:8px 14px; font-size:17px;" onclick="goHome()">🚪 Thoát</button>
+        </div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #cbd5e1; margin-bottom:16px;" class="no-print">
+        <select id="t-filter-class" class="form-control" style="max-width:200px;" onchange="renderTeacherDashboard()"><option value="ALL">Tất cả các lớp</option></select>
+        <select id="t-filter-status" class="form-control" style="max-width:220px;" onchange="renderTeacherDashboard()">
+          <option value="ALL">Tất cả trạng thái</option>
+          <option value="COMPLETED">Đã hoàn thành</option>
+          <option value="IN_PROGRESS">Đang thực hiện</option>
+        </select>
+        <input type="text" id="t-search-student" class="form-control" style="max-width:260px;" placeholder="🔍 Tìm tên học sinh..." oninput="renderTeacherDashboard()">
+      </div>
+      <div class="kpi-grid" id="t-kpi-grid"></div>
+      <h3>🏫 Thống kê tình hình tham gia theo lớp</h3>
+      <div id="t-class-cards" class="stage-grid" style="margin: 12px 0 22px 0;"></div>
+      <div class="tabs-nav no-print">
+        <button class="tab-btn active" onclick="switchTeacherTab(0, this)">1. Dạng sai nhiều & Hỗ trợ</button>
+        <button class="tab-btn" onclick="switchTeacherTab(1, this)">2. Bảng xếp hạng</button>
+        <button class="tab-btn" onclick="switchTeacherTab(2, this)">3. Kiến thức yếu từng em</button>
+        <button class="tab-btn" onclick="switchTeacherTab(3, this)">4. Biểu đồ tỷ lệ sai</button>
+        <button class="tab-btn" onclick="switchTeacherTab(4, this)">5. Thống kê câu hỏi</button>
+        <button class="tab-btn" onclick="switchTeacherTab(5, this)">6. Xuất báo cáo</button>
+      </div>
+      <div class="tab-pane active" id="t-tab-0"><div class="table-responsive" id="t-tab0-content"></div></div>
+      <div class="tab-pane" id="t-tab-1"><div class="table-responsive" id="t-tab1-content"></div></div>
+      <div class="tab-pane" id="t-tab-2"><div class="table-responsive" id="t-tab2-content"></div><div id="t-student-detail-box" style="margin-top:16px;"></div></div>
+      <div class="tab-pane" id="t-tab-3"><div id="t-tab3-content" style="margin-top:12px;"></div></div>
+      <div class="tab-pane" id="t-tab-4"><div class="table-responsive" id="t-tab4-content"></div></div>
+      <div class="tab-pane" id="t-tab-5">
+        <div class="btn-grid">
+          <button class="btn btn-success" onclick="exportCSV('students')">📄 Xuất danh sách kết quả (CSV)</button>
+          <button class="btn btn-primary" onclick="exportCSV('leaderboard')">🏅 Xuất bảng xếp hạng (CSV)</button>
+          <button class="btn btn-warning" onclick="exportCSV('questions')">❓ Xuất thống kê câu hỏi (CSV)</button>
+          <button class="btn btn-purple" onclick="exportCSV('weakness')">⚠️ Xuất thống kê lỗi sai (CSV)</button>
+          <button class="btn btn-outline" onclick="window.print()">🖨️ In báo cáo tổng hợp / Lưu PDF</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="modal-guide">
+  <div class="modal-box">
+    <h2>📖 HƯỚNG DẪN THAM GIA HÀNH TRÌNH</h2>
+    <ul style="padding-left: 24px; margin: 14px 0;">
+      <li><strong>Bước 1:</strong> Nhập họ tên, chọn lớp và chọn nhân vật đồng hành.</li>
+      <li><strong>Bước 2:</strong> Vượt qua các trạm trên bản đồ (đạt tối thiểu 60% số câu đúng để mở trạm tiếp theo).</li>
+      <li><strong>Bước 3:</strong> Trả lời sai mất 1 Tim và câu hỏi lưu vào Kho ôn tập để luyện lại hồi tim.</li>
+    </ul>
+    <button class="btn btn-primary" onclick="closeModal('modal-guide')">Đã hiểu</button>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-badges">
+  <div class="modal-box">
+    <h2>🏅 BỘ SƯU TẬP DANH HIỆU & HUY HIỆU</h2>
+    <div id="badges-list" style="margin: 14px 0;"></div>
+    <button class="btn btn-primary" onclick="closeModal('modal-badges')">Đóng</button>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-config">
+  <div class="modal-box">
+    <h2>⚙️ CẤU HÌNH ĐỒNG BỘ GOOGLE APPS SCRIPT</h2>
+    <div class="form-group">
+      <label>Đường dẫn Web App URL (/exec):</label>
+      <input type="text" id="inp-webapp-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-success" onclick="saveWebAppConfig()">💾 Lưu cấu hình</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-config')">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const GAME_CONFIG = {
+  "teacherName": "Võ Thị Thanh",
+  "schoolName": "Trường TH&THCS Sơn Trung",
+  "subject": "Tin học",
+  "grade": "Lớp 6",
+  "bookSeries": "Kết nối tri thức với cuộc sống",
+  "gameTitle": "THÁM HIỂM XA LỘ THÔNG TIN INTERNET",
+  "lessonTitle": "Bài 7: Tìm kiếm thông tin trên Internet (60 câu hỏi)",
+  "story": "Chào mừng các nhà thám hiểm nhí Trường TH&THCS Sơn Trung! Kho dữ liệu tri thức Internet rộng lớn đang chờ đón các em khám phá. Hãy sử dụng thành thạo máy tìm kiếm, từ khoá thông minh, công cụ AI và quy tắc an toàn mạng để vượt qua 4 trạm thử thách trên Xa lộ thông tin!",
+  "goal": "Chinh phục trọn vẹn 4 trạm thử thách (60 câu hỏi: 24 Biết – 24 Hiểu – 12 Vận dụng) với tỷ lệ đạt từ 60% mỗi trạm để giành danh hiệu Bậc thầy chinh phục.",
+  "classes": [
+    "6A",
+    "6B",
+    "7A",
+    "7B",
+    "8A",
+    "8B",
+    "9A",
+    "9B"
+  ],
+  "passRatio": 0.6,
+  "maxHearts": 5,
+  "defaultWebAppUrl": "https://script.google.com/macros/s/AKfycbwO7OMXnq47-IolO5Aq4-2ielxoFFxd9RNwFHoyQCfy0b0IkvDcrnKXPiRoXRkSnQY/exec",
+  "teacherPasscode": "SONTRUNG2026",
+  "stages": [
+    {
+      "id": 1,
+      "name": "Trạm 1: Khởi Động Cổng Tìm Kiếm",
+      "topic": "Máy tìm kiếm & Lọc cơ bản",
+      "icon": "🔍",
+      "desc": "Nhận diện máy tìm kiếm, từ khoá, thẻ lọc Hình ảnh – Video – Tin tức và thao tác sao chép cơ bản (Câu 1 – 15)."
+    },
+    {
+      "id": 2,
+      "name": "Trạm 2: Lá Chắn An Toàn & AI",
+      "topic": "An toàn Internet & AI tìm kiếm",
+      "icon": "🛡️",
+      "desc": "Nắm vững quy tắc an toàn thông tin cá nhân, quy trình tìm kiếm, Google Lens và ý nghĩa dấu ngoặc kép, dấu +, dấu – (Câu 16 – 30)."
+    },
+    {
+      "id": 3,
+      "name": "Trạm 3: Bậc Thầy Tối Ưu Từ Khoá",
+      "topic": "Kỹ thuật tìm kiếm & Khai thác số",
+      "icon": "🧭",
+      "desc": "Làm chủ kỹ thuật thu hẹp phạm vi tìm kiếm, đánh giá độ tin cậy nguồn tin, tổ chức lưu trữ và ứng dụng AI nhận dạng (Câu 31 – 48)."
+    },
+    {
+      "id": 4,
+      "name": "Trạm 4: Đấu Trường Tình Huống Thực Tiễn",
+      "topic": "Vận dụng giải quyết vấn đề số",
+      "icon": "🏆",
+      "desc": "Vận dụng tổng hợp kỹ năng đặt từ khoá, lọc nhiễu, bảo mật cá nhân và khai thác dữ liệu trong các tình huống đời sống (Câu 49 – 60)."
+    }
+  ]
+};
+
+const QUESTION_BANK = [
+  {
+    "id": "C01",
+    "stage": 1,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Máy tìm kiếm là gì?",
+    "options": [
+      "Một phần mềm diệt virus và bảo vệ dữ liệu trên máy tính.",
+      "Một website đặc biệt hỗ trợ tìm kiếm thông tin trên Internet.",
+      "Một thiết bị phần cứng giúp kết nối máy tính với mạng.",
+      "Một ứng dụng chuyên dùng để soạn thảo và in ấn văn bản."
+    ],
+    "answer": 1,
+    "hint": "Đây là một loại trang web đặc biệt dùng để tra cứu thông tin trên mạng.",
+    "explanation": "Máy tìm kiếm là một website đặc biệt giúp người sử dụng tìm kiếm thông tin trên Internet thông qua các từ khoá.",
+    "commonMistake": "Nhầm lẫn máy tìm kiếm với thiết bị phần cứng hoặc phần mềm soạn thảo.",
+    "remedy": "Ghi nhớ: Máy tìm kiếm là một website đặc biệt (như Google, Bing, Cốc Cốc)."
+  },
+  {
+    "id": "C02",
+    "stage": 1,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Đâu là địa chỉ của một máy tìm kiếm phổ biến?",
+    "options": [
+      "www.google.com",
+      "www.vtvgo.vn",
+      "www.khituongvietnam.gov.vn",
+      "www.thieunien.vn"
+    ],
+    "answer": 0,
+    "hint": "Địa chỉ quen thuộc nhất em thường mở để tra cứu mọi thông tin.",
+    "explanation": "www.google.com là một trong những máy tìm kiếm phổ biến được giới thiệu trong bài học (cùng với Yahoo, Bing, Cốc Cốc).",
+    "commonMistake": "Chọn nhầm trang xem truyền hình (vtvgo) hoặc báo điện tử (thieunien).",
+    "remedy": "Phân biệt địa chỉ máy tìm kiếm (google.com, bing.com) với website nội dung chuyên biệt."
+  },
+  {
+    "id": "C03",
+    "stage": 1,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Website nào sau đây không phải là máy tìm kiếm?",
+    "options": [
+      "www.bing.com",
+      "www.yahoo.com",
+      "coccoc.com",
+      "www.shopee.vn"
+    ],
+    "answer": 3,
+    "hint": "Tìm trang web dùng để mua sắm trực tuyến thay vì tìm kiếm thông tin chung trên web.",
+    "explanation": "www.shopee.vn là trang thương mại điện tử (mua sắm), không phải là máy tìm kiếm.",
+    "commonMistake": "Nhầm lẫn ô tìm kiếm sản phẩm trong trang mua sắm với máy tìm kiếm Internet.",
+    "remedy": "Ghi nhớ các máy tìm kiếm phổ biến: Google, Bing, Yahoo, Cốc Cốc."
+  },
+  {
+    "id": "C04",
+    "stage": 1,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Kết quả trả về khi sử dụng máy tìm kiếm có dạng gì?",
+    "options": [
+      "Một tệp văn bản chứa toàn bộ nội dung trang web.",
+      "Danh sách các liên kết trỏ đến trang web chứa từ khoá.",
+      "Bảng thống kê số lượng người truy cập vào máy tính.",
+      "Danh sách địa chỉ thư điện tử của các tổ chức uy tín."
+    ],
+    "answer": 1,
+    "hint": "Khi nhấn Enter trên Google, màn hình hiện ra các dòng tiêu đề xanh để em nháy chuột mở trang.",
+    "explanation": "Kết quả tìm kiếm trả về là danh sách các liên kết trỏ đến những trang web có chứa từ khoá đã nhập.",
+    "commonMistake": "Nghĩ rằng máy tìm kiếm tải sẵn toàn bộ tệp văn bản về máy.",
+    "remedy": "Quan sát giao diện kết quả tìm kiếm: gồm tiêu đề liên kết, đường dẫn và đoạn trích ngắn."
+  },
+  {
+    "id": "C05",
+    "stage": 1,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Các liên kết trong kết quả tìm kiếm có thể thuộc những dạng nào?",
+    "options": [
+      "Văn bản, hình ảnh hoặc video.",
+      "Chỉ có các đoạn văn bản chữ.",
+      "Chỉ có các tệp âm thanh nhạc.",
+      "Chỉ có các phần mềm trò chơi."
+    ],
+    "answer": 0,
+    "hint": "Trên Google có các thẻ Tất cả, Hình ảnh, Video...",
+    "explanation": "Các liên kết trong kết quả tìm kiếm có thể dẫn tới nội dung dạng văn bản, hình ảnh hoặc video.",
+    "commonMistake": "Cho rằng kết quả tìm kiếm chỉ hiển thị chữ viết.",
+    "remedy": "Nhớ lại 3 dạng thông tin chính trả về: văn bản, hình ảnh và video."
+  },
+  {
+    "id": "C06",
+    "stage": 1,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Từ khoá tìm kiếm được hiểu là gì?",
+    "options": [
+      "Mật khẩu dùng để đăng nhập vào tài khoản thư điện tử.",
+      "Tên của trình duyệt web đang được cài đặt trên máy tính.",
+      "Từ hoặc cụm từ liên quan đến nội dung cần tìm kiếm.",
+      "Địa chỉ trang chủ của một website bất kì trên Internet."
+    ],
+    "answer": 2,
+    "hint": "Đây là nội dung em gõ vào ô tìm kiếm của Google.",
+    "explanation": "Từ khoá là một từ hoặc cụm từ đặc trưng, liên quan đến nội dung cần tìm kiếm do người dùng cung cấp.",
+    "commonMistake": "Nhầm lẫn 'từ khoá' với 'mật khẩu' (password).",
+    "remedy": "Từ khoá (keyword) là từ/cụm từ đại diện cho thông tin em muốn tìm."
+  },
+  {
+    "id": "C07",
+    "stage": 1,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Để thu hẹp phạm vi tìm kiếm chính xác cụm từ, ta đặt từ khoá vào cặp dấu nào?",
+    "options": [
+      "Dấu ngoặc đơn ( ).",
+      "Dấu ngoặc kép “ ”.",
+      "Dấu ngoặc vuông [ ].",
+      "Dấu ngoặc nhọn { }."
+    ],
+    "answer": 1,
+    "hint": "Cặp dấu gồm hai nét phẩy ở phía trên đầu chữ.",
+    "explanation": "Đặt từ khoá trong dấu ngoặc kép (“ ”) giúp máy tìm kiếm chỉ tìm đúng cụm từ đó, thu hẹp phạm vi tìm kiếm.",
+    "commonMistake": "Chọn nhầm dấu ngoặc đơn ( ) hoặc ngoặc vuông [ ].",
+    "remedy": "Luôn dùng cặp dấu ngoặc kép \"...\" khi cần tìm chính xác nguyên văn cụm từ."
+  },
+  {
+    "id": "C08",
+    "stage": 1,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Khi tìm kiếm bằng máy tìm kiếm, ta có thể dùng dấu nào để thêm hoặc bớt từ khoá?",
+    "options": [
+      "Dấu nhân (×) hoặc dấu chia (:).",
+      "Dấu cộng (+) hoặc dấu trừ (–).",
+      "Dấu bằng (=) hoặc dấu hỏi (?).",
+      "Dấu chấm (.) hoặc dấu phẩy (,)."
+    ],
+    "answer": 1,
+    "hint": "Hai dấu toán học cơ bản biểu thị việc thêm vào và bớt đi.",
+    "explanation": "Có thể dùng dấu cộng (+) để thêm từ khoá hoặc dấu trừ (–) để bớt từ khoá nhằm gia tăng hoặc thu hẹp phạm vi tìm kiếm.",
+    "commonMistake": "Nhầm lẫn với dấu chấm, dấu phẩy hoặc dấu hỏi.",
+    "remedy": "Ghi nhớ quy tắc: dấu + (thêm từ khoá), dấu - (loại bớt từ khoá)."
+  },
+  {
+    "id": "C09",
+    "stage": 1,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Các trang web có nội dung liên quan nhất đến từ khoá thường xuất hiện ở vị trí nào?",
+    "options": [
+      "Ở cuối cùng của trang kết quả tìm kiếm.",
+      "Ở đầu danh sách kết quả tìm kiếm.",
+      "Ở trong mục cài đặt của trình duyệt web.",
+      "Ở bên trong hộp thư rác của người dùng."
+    ],
+    "answer": 1,
+    "hint": "Máy tìm kiếm sắp xếp mức độ phù hợp giảm dần từ trên xuống dưới.",
+    "explanation": "Các trang web có nội dung liên quan nhất đến từ khoá thường được xếp ở đầu danh sách kết quả.",
+    "commonMistake": "Nghĩ rằng kết quả đúng nằm ở cuối trang.",
+    "remedy": "Ưu tiên xem xét các liên kết xuất hiện ở đầu danh sách kết quả."
+  },
+  {
+    "id": "C10",
+    "stage": 1,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Để lọc kết quả tìm kiếm chỉ hiển thị các bức ảnh trên Google, ta nháy chuột vào thẻ nào?",
+    "options": [
+      "Tất cả.",
+      "Hình ảnh.",
+      "Tin tức.",
+      "Video."
+    ],
+    "answer": 1,
+    "hint": "Tên thẻ trùng với loại dữ liệu tranh, ảnh.",
+    "explanation": "Thẻ \"Hình ảnh\" trên giao diện Google dùng để lọc và chỉ hiển thị các kết quả dạng hình ảnh.",
+    "commonMistake": "Chọn nhầm thẻ Tất cả.",
+    "remedy": "Sử dụng thanh lọc dưới ô tìm kiếm: chọn thẻ Hình ảnh để xem riêng ảnh."
+  },
+  {
+    "id": "C11",
+    "stage": 1,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Để lọc kết quả tìm kiếm chỉ hiển thị các đoạn phim trên Google, ta nháy chuột vào thẻ nào?",
+    "options": [
+      "Tin tức.",
+      "Hình ảnh.",
+      "Video.",
+      "Công cụ."
+    ],
+    "answer": 2,
+    "hint": "Thẻ chuyên hiển thị các tệp phim, clip.",
+    "explanation": "Thẻ \"Video\" trên giao diện Google dùng để lọc và chỉ hiển thị các kết quả dạng video.",
+    "commonMistake": "Nhầm lẫn giữa thẻ Hình ảnh và thẻ Video.",
+    "remedy": "Ghi nhớ: ảnh chọn thẻ Hình ảnh, phim/clip chọn thẻ Video."
+  },
+  {
+    "id": "C12",
+    "stage": 1,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Để lọc kết quả tìm kiếm chỉ hiển thị các bài báo, bản tin trên Google, ta nháy vào thẻ nào?",
+    "options": [
+      "Hình ảnh.",
+      "Video.",
+      "Cài đặt.",
+      "Tin tức."
+    ],
+    "answer": 3,
+    "hint": "Thẻ dùng để xem các sự kiện thời sự, bài báo mới.",
+    "explanation": "Thẻ \"Tin tức\" trên giao diện Google dùng để lọc và chỉ hiển thị các kết quả là bài báo, tin tức.",
+    "commonMistake": "Chọn nhầm thẻ Cài đặt.",
+    "remedy": "Muốn đọc báo và tin thời sự, hãy nháy vào thẻ Tin tức."
+  },
+  {
+    "id": "C13",
+    "stage": 1,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Sau khi bôi đen đoạn văn bản trên trang web, ta nhấn tổ hợp phím nào để sao chép?",
+    "options": [
+      "Ctrl + V",
+      "Ctrl + X",
+      "Ctrl + C",
+      "Ctrl + S"
+    ],
+    "answer": 2,
+    "hint": "Chữ cái đầu của từ tiếng Anh 'Copy' (Sao chép).",
+    "explanation": "Sau khi chọn (bôi đen) nội dung văn bản cần sao chép, ta nhấn tổ hợp phím Ctrl + C.",
+    "commonMistake": "Nhầm lẫn giữa Ctrl + C (Sao chép) và Ctrl + V (Dán).",
+    "remedy": "Nhớ mẹo: C là Copy (Sao chép), V là dán vào văn bản."
+  },
+  {
+    "id": "C14",
+    "stage": 1,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Để dán đoạn văn bản vừa sao chép từ trang web vào tệp Word, ta nhấn tổ hợp phím nào?",
+    "options": [
+      "Ctrl + V",
+      "Ctrl + C",
+      "Ctrl + A",
+      "Ctrl + P"
+    ],
+    "answer": 0,
+    "hint": "Tổ hợp phím nằm ngay cạnh phím C trên bàn phím.",
+    "explanation": "Sau khi mở tệp văn bản, ta nhấn tổ hợp phím Ctrl + V để dán nội dung đã sao chép vào.",
+    "commonMistake": "Nhấn nhầm Ctrl + P (In) hoặc Ctrl + C (Sao chép lại).",
+    "remedy": "Ghi nhớ cặp thao tác: Ctrl + C để sao chép, Ctrl + V để dán."
+  },
+  {
+    "id": "C15",
+    "stage": 1,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Khi nháy nút phải chuột vào một hình ảnh trên trang web, ta chọn lệnh nào để lưu ảnh về máy?",
+    "options": [
+      "Sao chép hình ảnh.",
+      "Lưu hình ảnh thành...",
+      "Mở hình ảnh trong thẻ mới.",
+      "Sao chép địa chỉ hình ảnh."
+    ],
+    "answer": 1,
+    "hint": "Lệnh có chữ 'Lưu' ở đầu để lưu thành tệp trên ổ đĩa.",
+    "explanation": "Trên bảng chọn tắt khi nháy phải chuột vào hình ảnh, lệnh \"Lưu hình ảnh thành...\" dùng để lưu ảnh thành tệp trên máy tính.",
+    "commonMistake": "Chọn nhầm 'Sao chép địa chỉ hình ảnh' (chỉ lấy đường link).",
+    "remedy": "Muốn có tệp ảnh trên máy tính, chọn 'Lưu hình ảnh thành...' (Save image as...)."
+  },
+  {
+    "id": "C16",
+    "stage": 2,
+    "topic": "An toàn & Văn hóa Internet",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Theo lưu ý trong bài học, trước khi truy cập Internet, học sinh cần làm gì?",
+    "options": [
+      "Hỏi ý kiến của bố mẹ.",
+      "Tắt hết các phần mềm diệt virus.",
+      "Đăng nhập vào mọi trang web lạ.",
+      "Nhập đầy đủ thông tin cá nhân."
+    ],
+    "answer": 0,
+    "hint": "Cần xin phép người lớn trong gia đình để được hướng dẫn an toàn.",
+    "explanation": "Vì trên Internet có cả thông tin bổ ích lẫn thông tin độc hại nên học sinh cần hỏi ý kiến bố mẹ trước khi truy cập.",
+    "commonMistake": "Tự ý truy cập vào các trang web không rõ nguồn gốc.",
+    "remedy": "Luôn hỏi ý kiến bố mẹ hoặc thầy cô trước khi truy cập Internet."
+  },
+  {
+    "id": "C17",
+    "stage": 2,
+    "topic": "An toàn & Văn hóa Internet",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Hành động nào bị nghiêm cấm nhằm bảo vệ bản thân khi tìm kiếm thông tin trên Internet?",
+    "options": [
+      "Sử dụng từ khoá ngắn gọn để tìm bài học.",
+      "Cung cấp thông tin cá nhân khi truy cập Internet.",
+      "Lọc kết quả tìm kiếm theo dạng hình ảnh.",
+      "Sao chép nội dung học tập vào tệp văn bản."
+    ],
+    "answer": 1,
+    "hint": "Không tiết lộ họ tên, địa chỉ, số điện thoại của bản thân và gia đình lên mạng.",
+    "explanation": "Để đảm bảo an toàn, người dùng không được cung cấp thông tin cá nhân khi truy cập Internet.",
+    "commonMistake": "Nghĩ rằng nhập thông tin cá nhân để nhận tài liệu miễn phí là bình thường.",
+    "remedy": "Tuyệt đối bảo mật thông tin cá nhân khi tham gia môi trường mạng."
+  },
+  {
+    "id": "C18",
+    "stage": 2,
+    "topic": "Tìm kiếm thông minh với AI",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Công nghệ trí tuệ nhân tạo (AI) nào sau đây hỗ trợ tìm kiếm thông tin bằng hình ảnh?",
+    "options": [
+      "Google Lens.",
+      "MindMaple Lite.",
+      "Microsoft Word.",
+      "Unikey."
+    ],
+    "answer": 0,
+    "hint": "Công cụ của Google có biểu tượng chiếc máy ảnh nhỏ trên thanh tìm kiếm.",
+    "explanation": "Google Lens là công cụ AI nhận dạng hình ảnh hỗ trợ tìm kiếm thông tin bằng hình ảnh.",
+    "commonMistake": "Nhầm lẫn với phần mềm sơ đồ tư duy (MindMaple Lite) hoặc bộ gõ tiếng Việt (Unikey).",
+    "remedy": "Ghi nhớ: Google Lens hỗ trợ nhận dạng và tìm kiếm bằng hình ảnh."
+  },
+  {
+    "id": "C19",
+    "stage": 2,
+    "topic": "Tìm kiếm thông minh với AI",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Ngoài việc gõ chữ, công nghệ AI hiện nay còn hỗ trợ tìm kiếm thông tin qua hình thức nào?",
+    "options": [
+      "Nhận dạng âm thanh/giọng nói và hình ảnh.",
+      "Chỉ nhận dạng chữ viết tay trên giấy.",
+      "Chỉ nhận dạng tín hiệu đèn giao thông.",
+      "Chỉ nhận dạng qua thẻ nhớ điện thoại."
+    ],
+    "answer": 0,
+    "hint": "Em có thể nói vào micro hoặc đưa camera hướng vào đồ vật để tìm kiếm.",
+    "explanation": "Ngoài gõ chữ, công nghệ AI hiện nay hỗ trợ tìm kiếm thông qua nhận dạng hình ảnh và nhận dạng âm thanh/giọng nói.",
+    "commonMistake": "Cho rằng AI chỉ nhận dạng được chữ viết tay.",
+    "remedy": "Ba cách tìm kiếm phổ biến hiện nay: gõ từ khoá, giọng nói và hình ảnh."
+  },
+  {
+    "id": "C20",
+    "stage": 2,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Thứ tự đúng của quy trình tìm kiếm thông tin trên Internet là gì?",
+    "options": [
+      "Mở trình duyệt -> Truy cập máy tìm kiếm -> Gõ từ khoá -> Nhấn Enter -> Chọn liên kết.",
+      "Gõ từ khoá -> Mở trình duyệt -> Nhấn Enter -> Truy cập máy tìm kiếm -> Chọn liên kết.",
+      "Truy cập máy tìm kiếm -> Gõ từ khoá -> Mở trình duyệt -> Chọn liên kết -> Nhấn Enter.",
+      "Mở trình duyệt -> Gõ từ khoá -> Truy cập máy tìm kiếm -> Chọn liên kết -> Nhấn Enter."
+    ],
+    "answer": 0,
+    "hint": "Đầu tiên phải mở phần mềm trình duyệt web (Chrome, Cốc Cốc, Edge...) trước.",
+    "explanation": "Quy trình tìm kiếm chuẩn gồm 5 bước: Mở trình duyệt -> Truy cập trang máy tìm kiếm -> Gõ từ khoá -> Nhấn Enter -> Chọn liên kết phù hợp.",
+    "commonMistake": "Đảo ngược bước mở trình duyệt với bước truy cập máy tìm kiếm.",
+    "remedy": "Thực hiện tuần tự 5 bước từ mở trình duyệt đến chọn kết quả."
+  },
+  {
+    "id": "C21",
+    "stage": 2,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Tìm kiếm thông tin là một trong những dịch vụ phổ biến của hệ thống nào?",
+    "options": [
+      "Mạng nội bộ của một phòng máy.",
+      "Mạng Internet toàn cầu.",
+      "Phần mềm bảng tính điện tử.",
+      "Hệ điều hành của điện thoại."
+    ],
+    "answer": 1,
+    "hint": "Hệ thống mạng kết nối hàng tỉ máy tính trên toàn thế giới.",
+    "explanation": "Tìm kiếm thông tin là một trong các dịch vụ thông tin phổ biến của mạng Internet.",
+    "commonMistake": "Nhầm lẫn Internet toàn cầu với mạng nội bộ của một phòng máy.",
+    "remedy": "Internet cung cấp nhiều dịch vụ như WWW, thư điện tử và tìm kiếm thông tin."
+  },
+  {
+    "id": "C22",
+    "stage": 2,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Nhìn chung, cách sử dụng giữa các máy tìm kiếm khác nhau (như Google, Bing, Cốc Cốc) có đặc điểm gì?",
+    "options": [
+      "Hoàn toàn trái ngược nhau về thao tác.",
+      "Tương tự như nhau về cách sử dụng.",
+      "Mỗi máy yêu cầu một loại bàn phím riêng.",
+      "Chỉ dùng được trên một loại máy tính nhất định."
+    ],
+    "answer": 1,
+    "hint": "Tất cả đều có ô nhập từ khoá và nút tìm kiếm tương đồng.",
+    "explanation": "Nhìn chung cách sử dụng các máy tìm kiếm khác nhau (Google, Bing, Yahoo, Cốc Cốc) đều tương tự như nhau.",
+    "commonMistake": "Nghĩ rằng đổi sang máy tìm kiếm khác thì phải học lại cách dùng từ đầu.",
+    "remedy": "Khi đã biết dùng một máy tìm kiếm, em dễ dàng sử dụng được các máy tìm kiếm khác."
+  },
+  {
+    "id": "C23",
+    "stage": 2,
+    "topic": "An toàn & Văn hóa Internet",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Tại sao khi sử dụng Internet để tìm kiếm thông tin, chúng ta cần tuân thủ quy định của pháp luật?",
+    "options": [
+      "Vì Internet giống như một xa lộ thông tin (đường cao tốc).",
+      "Vì máy tính sẽ tự động tắt nguồn nếu không tuân thủ.",
+      "Vì các máy tìm kiếm chỉ hoạt động vào ban ngày.",
+      "Vì người dùng phải trả tiền cho mỗi lần nhấn phím Enter."
+    ],
+    "answer": 0,
+    "hint": "Sách giáo khoa ví von Internet như một tuyến đường giao thông khổng lồ.",
+    "explanation": "Internet là xa lộ thông tin giống như đường cao tốc nên người tham gia cần tuân thủ các quy định của pháp luật.",
+    "commonMistake": "Cho rằng trên môi trường mạng có thể làm bất cứ điều gì mà không bị ràng buộc.",
+    "remedy": "Tham gia Internet văn minh, đúng pháp luật như khi tham gia giao thông."
+  },
+  {
+    "id": "C24",
+    "stage": 2,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Biết",
+    "type": "mcq",
+    "question": "Trong ví dụ của sách giáo khoa, việc tìm kiếm từ khoá vai trò của tầng ozon trả về kết quả như thế nào so với “vai trò của tầng ozon”?",
+    "options": [
+      "Trả về số lượng các liên kết nhiều hơn rất nhiều.",
+      "Trả về số lượng các liên kết ít hơn đáng kể.",
+      "Không trả về bất kì liên kết nào trên màn hình.",
+      "Chỉ trả về các liên kết dạng video mà không có chữ."
+    ],
+    "answer": 0,
+    "hint": "Không có dấu ngoặc kép thì máy tìm cả những trang chỉ chứa từ đơn lẻ như 'vai trò' hoặc 'ozon'.",
+    "explanation": "Không dùng dấu ngoặc kép sẽ tìm cả các trang chứa từng từ đơn lẻ nên trả về khoảng 52.900 kết quả (nhiều hơn hẳn mức 1.510 kết quả khi có ngoặc kép).",
+    "commonMistake": "Nhầm lẫn giữa kết quả không ngoặc kép (rộng, nhiều) và có ngoặc kép (hẹp, ít).",
+    "remedy": "Dùng dấu ngoặc kép giúp thu hẹp phạm vi nên số lượng kết quả trả về ít và sát mục tiêu hơn."
+  },
+  {
+    "id": "C25",
+    "stage": 2,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Điểm khác biệt cơ bản giữa một website thông thường (như trang báo điện tử) và máy tìm kiếm là gì?",
+    "options": [
+      "Website thông thường chỉ cung cấp nội dung của trang đó, còn máy tìm kiếm giúp tìm thông tin trên nhiều website khác nhau.",
+      "Website thông thường cần có kết nối Internet mới xem được, còn máy tìm kiếm hoạt động không cần kết nối mạng.",
+      "Website thông thường chỉ hiển thị hình ảnh minh hoạ, còn máy tìm kiếm chỉ hiển thị các dòng văn bản chữ.",
+      "Website thông thường không có địa chỉ truy cập riêng, còn máy tìm kiếm luôn có địa chỉ bắt đầu bằng www."
+    ],
+    "answer": 0,
+    "hint": "Một bên là kho chứa nội dung riêng, một bên là công cụ chỉ đường đến hàng triệu trang web.",
+    "explanation": "Website thông thường chỉ chứa thông tin của riêng trang đó, còn máy tìm kiếm là website đặc biệt giúp tìm kiếm thông tin trên toàn bộ kho dữ liệu web thông qua từ khoá.",
+    "commonMistake": "Cho rằng máy tìm kiếm hoạt động không cần Internet.",
+    "remedy": "Máy tìm kiếm đóng vai trò cầu nối giúp tìm dữ liệu trên khắp các website khác nhau."
+  },
+  {
+    "id": "C26",
+    "stage": 2,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Vì sao việc lựa chọn từ khoá phù hợp lại đóng vai trò rất quan trọng khi tìm kiếm thông tin?",
+    "options": [
+      "Giúp máy tính tăng tốc độ xử lí của bộ vi xử lí CPU.",
+      "Giúp tìm kiếm thông tin nhanh chóng, chính xác và đúng trọng tâm.",
+      "Giúp tiết kiệm dung lượng bộ nhớ của ổ cứng máy tính.",
+      "Giúp ngăn chặn hoàn toàn các loại virus xâm nhập vào máy."
+    ],
+    "answer": 1,
+    "hint": "Từ khoá càng sát nội dung cần tìm thì kết quả càng đúng ý em.",
+    "explanation": "Từ khoá là căn cứ để máy tìm kiếm đối chiếu; chọn từ khoá phù hợp giúp tìm được thông tin nhanh và chính xác.",
+    "commonMistake": "Gán tác dụng của từ khoá cho phần cứng CPU hoặc diệt virus.",
+    "remedy": "Đặt từ khoá ngắn gọn, rõ nghĩa để tối ưu kết quả tìm kiếm."
+  },
+  {
+    "id": "C27",
+    "stage": 2,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Khi đặt cụm từ khoá trong cặp dấu ngoặc kép, máy tìm kiếm sẽ xử lí yêu cầu như thế nào?",
+    "options": [
+      "Tìm các trang web có chứa chính xác toàn bộ cụm từ đó theo đúng thứ tự.",
+      "Tìm các trang web có chứa từng từ riêng lẻ nằm rải rác ở nhiều đoạn.",
+      "Loại bỏ hoàn toàn cụm từ đó ra khỏi danh sách kết quả tìm kiếm.",
+      "Tự động dịch cụm từ đó sang tiếng Anh trước khi tiến hành tìm kiếm."
+    ],
+    "answer": 0,
+    "hint": "Dấu ngoặc kép khoá chặt thứ tự và nội dung cụm từ bên trong.",
+    "explanation": "Dấu ngoặc kép yêu cầu máy tìm kiếm tìm chính xác toàn bộ cụm từ nằm bên trong theo đúng thứ tự từ ngữ.",
+    "commonMistake": "Nhầm lẫn với tác dụng loại trừ của dấu trừ (-).",
+    "remedy": "Dùng \"cụm từ\" khi muốn kết quả chứa nguyên vẹn cụm từ đó."
+  },
+  {
+    "id": "C28",
+    "stage": 2,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Ý nghĩa của việc sử dụng dấu trừ (–) ngay trước một từ khoá trong ô tìm kiếm là gì?",
+    "options": [
+      "Bắt buộc từ khoá đó phải xuất hiện ở tiêu đề trang web.",
+      "Loại trừ, bớt đi những kết quả có chứa từ khoá đó để thu hẹp phạm vi.",
+      "Tìm kiếm các trang web có chứa phép tính trừ toán học.",
+      "Mở rộng phạm vi tìm kiếm sang các ngôn ngữ quốc tế khác."
+    ],
+    "answer": 1,
+    "hint": "Dấu trừ mang nghĩa 'không bao gồm'.",
+    "explanation": "Dấu trừ (–) dùng để loại bớt từ khoá không mong muốn, giúp thu hẹp phạm vi tìm kiếm.",
+    "commonMistake": "Nghĩ rằng dấu trừ dùng để tìm phép toán trừ.",
+    "remedy": "Đặt dấu - sát trước từ muốn loại bỏ (ví dụ: -quảng cáo)."
+  },
+  {
+    "id": "C29",
+    "stage": 2,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Ý nghĩa của việc sử dụng dấu cộng (+) khi nhập từ khoá tìm kiếm là gì?",
+    "options": [
+      "Thêm từ khoá nhằm gia tăng điều kiện hoặc mở rộng phạm vi tìm kiếm.",
+      "Yêu cầu máy tìm kiếm cộng tổng số lượng trang web tìm được.",
+      "Xoá bỏ lịch sử tìm kiếm trước đó trên trình duyệt web.",
+      "Chỉ tìm kiếm các kết quả được đăng tải trong ngày hôm nay."
+    ],
+    "answer": 0,
+    "hint": "Dấu cộng bổ sung thêm yêu cầu vào câu lệnh tìm kiếm.",
+    "explanation": "Dấu cộng (+) dùng để bổ sung thêm từ khoá nhằm gia tăng điều kiện tìm kiếm.",
+    "commonMistake": "Nhầm lẫn dấu cộng với việc tính tổng số trang web.",
+    "remedy": "Dùng dấu + để thêm từ khoá điều kiện kèm theo."
+  },
+  {
+    "id": "C30",
+    "stage": 2,
+    "topic": "An toàn & Văn hóa Internet",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Tại sao sau khi nhận được danh sách kết quả từ máy tìm kiếm, người dùng cần phải chọn lọc thông tin?",
+    "options": [
+      "Vì trên Internet có cả thông tin bổ ích lẫn thông tin độc hại, thiếu chính xác.",
+      "Vì máy tìm kiếm chỉ hiển thị tối đa ba kết quả cho mỗi lần tra cứu.",
+      "Vì các liên kết ở đầu danh sách luôn là những trang web chứa virus.",
+      "Vì thông tin trên Internet không bao giờ được cập nhật nội dung mới."
+    ],
+    "answer": 0,
+    "hint": "Bất kì ai cũng có thể đăng thông tin lên mạng nên độ tin cậy rất khác nhau.",
+    "explanation": "Nguồn thông tin trên Internet rất đa dạng, không phải mọi trang web đều chính xác và an toàn nên cần chọn lọc kĩ.",
+    "commonMistake": "Tin tưởng tuyệt đối vào mọi kết quả tìm thấy trên mạng.",
+    "remedy": "Luôn kiểm tra nguồn gốc và đối chiếu thông tin trước khi sử dụng."
+  },
+  {
+    "id": "C31",
+    "stage": 3,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Để tìm kiếm thông tin về lớp vỏ Trái Đất, từ khoá nào sau đây giúp thu hẹp phạm vi tìm kiếm hiệu quả nhất?",
+    "options": [
+      "Trái Đất",
+      "Lớp vỏ Trái Đất",
+      "“lớp vỏ Trái Đất”",
+      "“lớp vỏ” + “Trái Đất”"
+    ],
+    "answer": 2,
+    "hint": "Đặt cả cụm từ mục tiêu vào trong cặp dấu ngoặc kép.",
+    "explanation": "Đặt cụm từ “lớp vỏ Trái Đất” trong dấu ngoặc kép sẽ giúp thu hẹp phạm vi tìm kiếm chính xác vào đối tượng này.",
+    "commonMistake": "Chỉ gõ 'Trái Đất' khiến kết quả quá rộng.",
+    "remedy": "Đóng ngoặc kép toàn bộ cụm từ chuyên môn cần tra cứu."
+  },
+  {
+    "id": "C32",
+    "stage": 3,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Khi sử dụng máy tìm kiếm, làm thế nào để biết một dòng chữ trên trang kết quả là một liên kết có thể nháy vào?",
+    "options": [
+      "Di chuyển con trỏ chuột vào dòng chữ đó, con trỏ chuyển thành hình bàn tay.",
+      "Dòng chữ đó luôn nhấp nháy liên tục với nhiều màu sắc khác nhau.",
+      "Phải nhấn giữ đồng thời phím Shift và phím Enter trên bàn phím.",
+      "Dòng chữ đó luôn nằm ở góc dưới cùng bên phải của màn hình."
+    ],
+    "answer": 0,
+    "hint": "Biểu tượng con trỏ chuột thay đổi khi rà vào siêu liên kết.",
+    "explanation": "Khi di chuyển con trỏ chuột vào một siêu liên kết trên trang web, con trỏ chuột thường chuyển thành biểu tượng hình bàn tay.",
+    "commonMistake": "Nhầm lẫn với biểu tượng chữ I (chọn văn bản) hoặc mũi tên thông thường.",
+    "remedy": "Quan sát con trỏ chuột: chuyển sang hình bàn tay nghĩa là có thể nháy để mở liên kết."
+  },
+  {
+    "id": "C33",
+    "stage": 3,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Việc sử dụng từ khoá quá chung chung (ví dụ chỉ gõ chữ \"mạng\") sẽ dẫn đến hạn chế gì?",
+    "options": [
+      "Máy tìm kiếm sẽ báo lỗi và không hiển thị bất kì kết quả nào.",
+      "Trả về quá nhiều kết quả dàn trải, gây khó khăn khi tìm đúng nội dung cần thiết.",
+      "Làm hỏng kết nối Internet của máy tính đang sử dụng.",
+      "Chỉ hiển thị kết quả là các đoạn video quảng cáo thương mại."
+    ],
+    "answer": 1,
+    "hint": "Từ 'mạng' có thể là mạng máy tính, mạng nhện, mạng di động, mạng lưới giao thông...",
+    "explanation": "Từ khoá quá ngắn và chung chung sẽ khớp với hàng triệu trang web không liên quan, làm mất thời gian sàng lọc.",
+    "commonMistake": "Cho rằng máy tìm kiếm sẽ báo lỗi khi từ khoá ngắn.",
+    "remedy": "Cụ thể hoá từ khoá (ví dụ: 'mạng máy tính là gì') thay vì gõ một từ đơn chung chung."
+  },
+  {
+    "id": "C34",
+    "stage": 3,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Thuận lợi lớn nhất của việc dùng máy tìm kiếm so với việc gõ trực tiếp địa chỉ từng trang web là gì?",
+    "options": [
+      "Không cần biết trước địa chỉ trang web vẫn có thể tìm được thông tin mong muốn.",
+      "Có thể truy cập và đọc toàn bộ nội dung mà không cần kết nối mạng Internet.",
+      "Máy tính không cần cài đặt bất kì phần mềm trình duyệt web nào.",
+      "Đảm bảo 100% thông tin tìm được đều là tài liệu học tập của Bộ Giáo dục."
+    ],
+    "answer": 0,
+    "hint": "Em không thể nhớ hết hàng triệu tên miền trên thế giới.",
+    "explanation": "Người dùng chỉ cần nhập từ khoá liên quan đến nội dung cần tìm mà không cần phải nhớ địa chỉ cụ thể của từng trang web.",
+    "commonMistake": "Nghĩ rằng dùng máy tìm kiếm không cần trình duyệt web.",
+    "remedy": "Máy tìm kiếm giúp tìm thông tin theo nội dung từ khoá mà không cần thuộc địa chỉ URL."
+  },
+  {
+    "id": "C35",
+    "stage": 3,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Khi tìm được một trang web hay, thao tác nháy chuột phải vào liên kết và chọn \"Mở liên kết trong tab mới\" có tác dụng gì?",
+    "options": [
+      "Giữ nguyên trang danh sách kết quả tìm kiếm để tiện xem tiếp các trang khác.",
+      "Tải toàn bộ trang web đó về lưu trữ trong ổ đĩa C của máy tính.",
+      "Xoá bỏ liên kết đó khỏi danh sách kết quả của máy tìm kiếm.",
+      "In trực tiếp nội dung của trang web đó ra máy in đang kết nối."
+    ],
+    "answer": 0,
+    "hint": "Giúp em mở song song nhiều trang để đối chiếu thông tin dễ dàng.",
+    "explanation": "Mở liên kết trong tab mới giúp giữ nguyên trang kết quả tìm kiếm ở tab cũ để người dùng dễ dàng quay lại xem tiếp các liên kết khác.",
+    "commonMistake": "Nhầm lẫn với lệnh tải trang web về máy.",
+    "remedy": "Tập thói quen mở các kết quả tiềm năng ở tab mới để tiện so sánh nguồn tin."
+  },
+  {
+    "id": "C36",
+    "stage": 3,
+    "topic": "Tìm kiếm thông minh với AI",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Tại sao nói việc tìm kiếm bằng giọng nói và hình ảnh (AI) giúp ích rất nhiều cho người dùng?",
+    "options": [
+      "Giúp tìm kiếm nhanh khi không biết cách viết tên đối tượng hoặc ngại gõ phím.",
+      "Giúp máy tính tự động làm hết toàn bộ bài tập về nhà cho học sinh.",
+      "Giúp tăng dung lượng pin của điện thoại thông minh lên gấp đôi.",
+      "Giúp biến tất cả các hình ảnh đen trắng thành video có âm thanh."
+    ],
+    "answer": 0,
+    "hint": "Rất hữu ích khi gặp một loài cây lạ hoặc một từ tiếng nước ngoài khó viết.",
+    "explanation": "Trong nhiều tình huống thực tế (như gặp một loài hoa lạ chưa biết tên), người dùng không thể gõ chữ miêu tả chính xác nên dùng camera/giọng nói sẽ tra cứu được ngay.",
+    "commonMistake": "Thần thánh hoá AI như một công cụ làm thay toàn bộ bài tập.",
+    "remedy": "AI hỗ trợ nhận dạng đa phương thức giúp việc tra cứu thuận tiện và tự nhiên hơn."
+  },
+  {
+    "id": "C37",
+    "stage": 3,
+    "topic": "Tìm kiếm thông minh với AI",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Khi một ứng dụng tìm kiếm tích hợp AI yêu cầu quyền truy cập vào micro và camera, người dùng cần kiểm tra điều gì để đảm bảo an toàn?",
+    "options": [
+      "Ứng dụng đó có thu thập dữ liệu trái phép và có minh bạch mục đích sử dụng không.",
+      "Ứng dụng đó có giao diện màu xanh hay màu đỏ trên màn hình điện thoại.",
+      "Ứng dụng đó có cho phép đổi phông chữ sang kiểu chữ thư pháp hay không.",
+      "Ứng dụng đó có thể hoạt động khi điện thoại đã tắt nguồn hay không."
+    ],
+    "answer": 0,
+    "hint": "Liên quan đến quyền riêng tư và bảo mật dữ liệu cá nhân.",
+    "explanation": "Để bảo vệ an toàn dữ liệu cá nhân, người dùng cần tự kiểm tra xem ứng dụng AI có thu thập thông tin trái phép và có minh bạch mục đích sử dụng micro/camera hay không.",
+    "commonMistake": "Cấp quyền micro và camera tuỳ tiện cho mọi ứng dụng lạ.",
+    "remedy": "Chỉ cấp quyền camera/micro cho ứng dụng uy tín và minh bạch chính sách bảo mật."
+  },
+  {
+    "id": "C38",
+    "stage": 3,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Trong thao tác lưu hình ảnh từ trang web về máy tính, lệnh \"Sao chép hình ảnh\" khác với lệnh \"Lưu hình ảnh thành...\" ở điểm nào?",
+    "options": [
+      "\"Sao chép hình ảnh\" chỉ lưu tạm vào bộ nhớ đệm để dán, còn \"Lưu hình ảnh thành...\" tạo ra một tệp ảnh trên máy.",
+      "\"Sao chép hình ảnh\" lưu ảnh vào ổ đĩa D, còn \"Lưu hình ảnh thành...\" gửi ảnh qua thư điện tử.",
+      "\"Sao chép hình ảnh\" chỉ áp dụng cho ảnh động, còn \"Lưu hình ảnh thành...\" chỉ dùng cho ảnh tĩnh.",
+      "Hai lệnh này có chức năng hoàn toàn giống nhau và đều tự động mở phần mềm Paint."
+    ],
+    "answer": 0,
+    "hint": "Một lệnh dùng để dán ngay (Ctrl+V), một lệnh tạo tệp lưu lâu dài trong thư mục.",
+    "explanation": "\"Sao chép hình ảnh\" chỉ đưa ảnh vào bộ nhớ tạm để dán trực tiếp vào tài liệu, còn \"Lưu hình ảnh thành...\" sẽ lưu ảnh thành một tệp độc lập trên ổ đĩa máy tính.",
+    "commonMistake": "Nghĩ rằng 'Sao chép hình ảnh' đã tạo sẵn tệp ảnh trong thư mục máy tính.",
+    "remedy": "Muốn lưu trữ lâu dài để dùng nhiều lần, hãy chọn 'Lưu hình ảnh thành...'."
+  },
+  {
+    "id": "C39",
+    "stage": 3,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Nếu em nhập từ khoá cách làm bánh +không cần lò nướng vào ô tìm kiếm, kết quả nhận được sẽ như thế nào?",
+    "options": [
+      "Các trang web hướng dẫn làm bánh bắt buộc phải có cụm từ \"không cần lò nướng\".",
+      "Các trang web hướng dẫn làm bánh có sử dụng lò nướng điện công suất lớn.",
+      "Các trang web bán các loại lò nướng bánh gia đình giá rẻ.",
+      "Máy tìm kiếm sẽ báo lỗi cú pháp vì không hiểu dấu cộng ở giữa câu."
+    ],
+    "answer": 0,
+    "hint": "Dấu cộng (+) bổ sung điều kiện bắt buộc cho kết quả tìm kiếm.",
+    "explanation": "Dấu cộng (+) bổ sung yêu cầu bắt buộc kết quả tìm kiếm phải có cụm từ \"không cần lò nướng\".",
+    "commonMistake": "Nhầm lẫn tác dụng của dấu + với dấu -.",
+    "remedy": "Sử dụng dấu + để nhấn mạnh yếu tố bắt buộc phải có trong trang kết quả."
+  },
+  {
+    "id": "C40",
+    "stage": 3,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Vì sao khi sao chép thông tin từ Internet để làm bài báo cáo học tập, chúng ta cần đọc lại và chọn lọc nội dung?",
+    "options": [
+      "Để đảm bảo thông tin chính xác, phù hợp với yêu cầu bài học và tránh sao chép lan man.",
+      "Vì phần mềm soạn thảo văn bản không cho phép dán quá năm dòng chữ từ mạng.",
+      "Vì mọi thông tin trên Internet đều viết bằng tiếng nước ngoài nên phải dịch lại.",
+      "Vì nếu không chọn lọc thì tệp văn bản sẽ tự động bị xoá sau khi lưu."
+    ],
+    "answer": 0,
+    "hint": "Làm báo cáo cần đúng trọng tâm, chính xác và có biên tập lại.",
+    "explanation": "Thông tin trên mạng đến từ nhiều nguồn khác nhau, người dùng cần chọn lọc thông tin chính xác, phù hợp với mục đích sử dụng.",
+    "commonMistake": "Sao chép nguyên văn cả trang web dài dòng mà không đọc lại.",
+    "remedy": "Đọc hiểu, tóm tắt và chỉ giữ lại nội dung chính xác, phù hợp yêu cầu bài học."
+  },
+  {
+    "id": "C41",
+    "stage": 3,
+    "topic": "An toàn & Văn hóa Internet",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Hành động nào thể hiện thái độ có trách nhiệm và văn hoá khi khai thác thông tin trên Internet?",
+    "options": [
+      "Chọn lọc thông tin từ nguồn chính thống, tin cậy để phục vụ học tập.",
+      "Chia sẻ ngay mọi tin đồn giật gân chưa kiểm chứng cho bạn bè cùng xem.",
+      "Tự ý lấy bài viết của người khác trên mạng và nhận là do mình sáng tác.",
+      "Truy cập vào các trang web có nội dung bạo lực vì tò mò."
+    ],
+    "answer": 0,
+    "hint": "Tôn trọng bản quyền và sử dụng thông tin chính thống.",
+    "explanation": "Biết chọn lọc thông tin từ các nguồn chính thống, tin cậy thể hiện năng lực số và trách nhiệm khi sử dụng Internet.",
+    "commonMistake": "Cho rằng lấy bài viết trên mạng không cần ghi nguồn là bình thường.",
+    "remedy": "Luôn kiểm chứng độ tin cậy và tôn trọng quyền tác giả khi khai thác dữ liệu số."
+  },
+  {
+    "id": "C42",
+    "stage": 3,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Khi thực hành tìm kiếm thông tin về \"vai trò của tầng ozon\", nếu muốn tìm kiếm chính xác cụm từ này, em cần gõ như thế nào vào ô tìm kiếm?",
+    "options": [
+      "\"vai trò của tầng ozon\"",
+      "(vai trò của tầng ozon)",
+      "[vai trò của tầng ozon]",
+      "-vai trò của tầng ozon-"
+    ],
+    "answer": 0,
+    "hint": "Đặt cụm từ vào giữa cặp dấu ngoặc kép.",
+    "explanation": "Đặt cụm từ trong dấu ngoặc kép \"vai trò của tầng ozon\" là quy tắc chuẩn để tìm kiếm chính xác cụm từ đó.",
+    "commonMistake": "Dùng dấu gạch ngang ở hai đầu cụm từ.",
+    "remedy": "Ghi nhớ cú pháp: \"từ khoá chính xác\"."
+  },
+  {
+    "id": "C43",
+    "stage": 3,
+    "topic": "An toàn & Văn hóa Internet",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Dấu hiệu nào giúp em nhận biết một trang web tin tức trên Internet có độ tin cậy cao?",
+    "options": [
+      "Là trang web của các cơ quan, tổ chức chính thống, báo lớn có uy tín.",
+      "Trang web có rất nhiều quảng cáo nhấp nháy và thông báo trúng thưởng.",
+      "Trang web yêu cầu nhập mật khẩu ngân hàng ngay khi vừa truy cập.",
+      "Trang web không có tên cơ quan chủ quản và chứa nhiều lỗi chính tả."
+    ],
+    "answer": 0,
+    "hint": "Các trang tên miền .gov.vn, .edu.vn hoặc báo chí chính thống.",
+    "explanation": "Các trang web của cơ quan nhà nước, tổ chức giáo dục hoặc các tờ báo lớn chính thống có sự kiểm duyệt thông tin chặt chẽ nên độ tin cậy cao.",
+    "commonMistake": "Tin vào các trang web trúng thưởng hoặc trang không rõ cơ quan chủ quản.",
+    "remedy": "Kiểm tra tên miền và cơ quan chủ quản ở cuối trang web để đánh giá độ tin cậy."
+  },
+  {
+    "id": "C44",
+    "stage": 3,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Trong giờ thực hành Tin học, sau khi tải hình ảnh minh hoạ về máy tính, em nên lưu ảnh vào đâu để dễ tìm lại?",
+    "options": [
+      "Lưu vào thư mục riêng của nhóm/cá nhân với tên tệp gợi nhớ nội dung.",
+      "Lưu ngẫu nhiên vào bất kì thư mục hệ thống nào trên ổ đĩa C.",
+      "Để nguyên trong thùng rác (Recycle Bin) của máy tính để đỡ tốn chỗ.",
+      "Không cần lưu mà chụp ảnh màn hình bằng điện thoại rồi xoá đi."
+    ],
+    "answer": 0,
+    "hint": "Tổ chức cây thư mục khoa học và đặt tên tệp rõ ràng.",
+    "explanation": "Việc lưu tệp đúng thư mục quy định với tên gợi nhớ giúp quản lí dữ liệu khoa học và tránh thất lạc tệp.",
+    "commonMistake": "Để mặc định tên tệp vô nghĩa như 'images (1).jpg' ngoài màn hình nền.",
+    "remedy": "Tạo thư mục bài thực hành riêng và đặt tên tệp theo nội dung bức ảnh."
+  },
+  {
+    "id": "C45",
+    "stage": 3,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Khi tìm kiếm bài hát mà em chỉ nhớ được một câu hát ngắn bên trong, cách làm nào giúp tìm ra tên bài hát nhanh nhất?",
+    "options": [
+      "Gõ chính xác câu hát đó đặt trong dấu ngoặc kép vào ô tìm kiếm.",
+      "Gõ tên ca sĩ mà em đoán là người đã hát bài hát đó.",
+      "Gõ chữ \"bài hát hay nhất\" rồi tìm lần lượt từng trang kết quả.",
+      "Gõ năm sáng tác của bài hát vào thanh địa chỉ của trình duyệt."
+    ],
+    "answer": 0,
+    "hint": "Tìm chính xác nguyên văn câu lời bài hát đó.",
+    "explanation": "Đặt đoạn lời bài hát nhớ được vào trong dấu ngoặc kép giúp máy tìm kiếm truy ra chính xác bài hát chứa câu hát đó.",
+    "commonMistake": "Gõ từ khoá quá chung chung như 'bài hát hay nhất'.",
+    "remedy": "Dùng dấu ngoặc kép bao quanh câu lời bài hát đặc trưng để tra cứu nhanh."
+  },
+  {
+    "id": "C46",
+    "stage": 3,
+    "topic": "Máy tìm kiếm & Từ khóa",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Nếu tìm kiếm thông tin về \"lịch sử Việt Nam\" nhưng em không muốn xem các kết quả liên quan đến \"chiến tranh\", em nên nhập từ khoá nào?",
+    "options": [
+      "\"lịch sử Việt Nam\" -chiến tranh",
+      "\"lịch sử Việt Nam\" +chiến tranh",
+      "\"lịch sử Việt Nam\" \"chiến tranh\"",
+      "lịch sử Việt Nam / chiến tranh"
+    ],
+    "answer": 0,
+    "hint": "Kết hợp dấu ngoặc kép cho cụm chính và dấu trừ (-) cho từ muốn loại bỏ.",
+    "explanation": "Sử dụng dấu trừ (-chiến tranh) sẽ loại bỏ các kết quả có chứa từ \"chiến tranh\" ra khỏi danh sách tìm kiếm.",
+    "commonMistake": "Dùng dấu + thay vì dấu -.",
+    "remedy": "Ghi nhớ: dấu - đặt trước từ muốn loại trừ khỏi kết quả."
+  },
+  {
+    "id": "C47",
+    "stage": 3,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Tại sao trong các tiết thực hành ở phòng máy, giáo viên thường yêu cầu hai học sinh làm việc nhóm trên một máy tính khi tìm kiếm thông tin?",
+    "options": [
+      "Để học sinh cùng thảo luận chọn từ khoá, hỗ trợ nhau lọc thông tin và thực hành thao tác.",
+      "Vì máy tìm kiếm Google chỉ cho phép hoạt động khi có hai người cùng ngồi trước màn hình.",
+      "Để một bạn chỉ ngồi chơi còn một bạn làm hết tất cả các nhiệm vụ thực hành.",
+      "Vì bàn phím máy tính cần hai người cùng gõ mới có thể nhập được dấu ngoặc kép."
+    ],
+    "answer": 0,
+    "hint": "Phát huy năng lực hợp tác, trao đổi và kiểm tra chéo thông tin.",
+    "explanation": "Làm việc theo cặp đôi giúp học sinh trao đổi, thống nhất từ khoá tìm kiếm, kiểm tra chéo độ tin cậy của thông tin và hỗ trợ nhau thao tác máy tính.",
+    "commonMistake": "Để một bạn làm hết còn một bạn không tham gia.",
+    "remedy": "Hai bạn luân phiên thao tác và cùng thảo luận đánh giá kết quả tìm được."
+  },
+  {
+    "id": "C48",
+    "stage": 3,
+    "topic": "Tìm kiếm thông minh với AI",
+    "level": "Hiểu",
+    "type": "mcq",
+    "question": "Khi sử dụng công cụ Google Lens (tìm kiếm bằng hình ảnh) trên máy tính hoặc điện thoại, hệ thống sẽ làm gì?",
+    "options": [
+      "Phân tích hình ảnh được cung cấp và trả về thông tin, tên gọi của đối tượng trong ảnh.",
+      "Tự động vẽ lại bức ảnh đó thành một bức tranh sơn dầu nghệ thuật.",
+      "Xoá bỏ bức ảnh gốc khỏi bộ nhớ thiết bị để giải phóng dung lượng.",
+      "Gửi bức ảnh đó đến tất cả danh bạ điện thoại của người sử dụng."
+    ],
+    "answer": 0,
+    "hint": "AI nhận dạng vật thể trong ảnh và đối chiếu với dữ liệu trên Internet.",
+    "explanation": "Google Lens ứng dụng trí tuệ nhân tạo nhận dạng hình ảnh để phân tích bức ảnh và trả về tên gọi, thông tin liên quan đến đối tượng trong ảnh.",
+    "commonMistake": "Nhầm lẫn công cụ nhận dạng ảnh với phần mềm chỉnh sửa ảnh nghệ thuật.",
+    "remedy": "Google Lens giúp trả lời câu hỏi 'Đây là gì?' thông qua hình ảnh."
+  },
+  {
+    "id": "C49",
+    "stage": 4,
+    "topic": "Vận dụng tìm kiếm thực tiễn",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Gia đình An chuẩn bị đi du lịch tại thành phố Hạ Long vào cuối tuần này. An muốn tra cứu dự báo thời tiết để chuẩn bị quần áo phù hợp. Từ khoá nào sau đây là ngắn gọn và hiệu quả nhất?",
+    "options": [
+      "Thời tiết Hạ Long cuối tuần này",
+      "Gia đình An đi du lịch ở thành phố Hạ Long thì thời tiết như thế nào",
+      "Du lịch biển miền Bắc",
+      "Quần áo mùa hè đi chơi biển"
+    ],
+    "answer": 0,
+    "hint": "Chọn cụm từ chứa đủ 3 yếu tố: chủ đề (thời tiết), địa điểm (Hạ Long), thời gian (cuối tuần này).",
+    "explanation": "Từ khoá Thời tiết Hạ Long cuối tuần này ngắn gọn, chứa đầy đủ các từ khoá trọng tâm về nội dung (thời tiết), địa điểm (Hạ Long) và thời gian (cuối tuần này).",
+    "commonMistake": "Viết cả một câu kể chuyện dài dòng vào ô tìm kiếm.",
+    "remedy": "Rút gọn câu hỏi thành các từ khoá chính mang thông tin cốt lõi."
+  },
+  {
+    "id": "C50",
+    "stage": 4,
+    "topic": "Vận dụng tìm kiếm thực tiễn",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Minh muốn tìm hình ảnh về \"Văn Miếu – Quốc Tử Giám\" để chèn vào bài trình chiếu môn Lịch sử. Sau khi gõ từ khoá và nhấn Enter trên Google, bước tiếp theo Minh cần làm là gì?",
+    "options": [
+      "Nháy chuột vào thẻ \"Hình ảnh\" để lọc riêng các kết quả là ảnh.",
+      "Nháy chuột vào thẻ \"Video\" để tải các đoạn phim giới thiệu.",
+      "Nháy chuột vào thẻ \"Tin tức\" để đọc các bài báo về giáo dục.",
+      "Nhấn tổ hợp phím Ctrl + C ngay trên trang danh sách kết quả."
+    ],
+    "answer": 0,
+    "hint": "Mục tiêu của Minh là tìm ảnh minh hoạ cho bài trình chiếu.",
+    "explanation": "Sau khi tìm kiếm, chọn thẻ \"Hình ảnh\" sẽ lọc ra toàn bộ các hình ảnh về Văn Miếu – Quốc Tử Giám để Minh chọn và tải về.",
+    "commonMistake": "Quên chuyển sang thẻ Hình ảnh nên mất thời gian mở từng trang báo.",
+    "remedy": "Sử dụng ngay thẻ lọc Hình ảnh sau khi nhấn Enter."
+  },
+  {
+    "id": "C51",
+    "stage": 4,
+    "topic": "Tìm kiếm thông minh với AI",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Trong chuyến dã ngoại cùng gia đình ở vùng núi, Khoa bắt gặp một loài hoa rừng lạ rất đẹp nhưng không biết tên. Khoa có thể dùng cách nào nhanh nhất trên điện thoại của bố mẹ để biết tên loài hoa này?",
+    "options": [
+      "Mở ứng dụng có tính năng tìm kiếm bằng hình ảnh (Google Lens) và hướng camera vào bông hoa.",
+      "Gọi điện thoại hỏi tất cả các bạn trong lớp xem có ai biết tên loài hoa đó không.",
+      "Nhập từ khoá \"bông hoa màu đẹp mọc ở trong rừng\" vào máy tìm kiếm.",
+      "Ghi chép đặc điểm bông hoa vào sổ tay rồi đợi tuần sau đến thư viện trường tra cứu."
+    ],
+    "answer": 0,
+    "hint": "Tận dụng camera điện thoại và AI nhận dạng hình ảnh ngay tại chỗ.",
+    "explanation": "Dùng AI nhận dạng hình ảnh (Google Lens) quét trực tiếp bông hoa qua camera điện thoại sẽ cho ra tên chính xác của loài hoa mà không cần biết tên trước.",
+    "commonMistake": "Mô tả chung chung bằng chữ 'bông hoa màu đẹp' khiến máy tìm kiếm không thể xác định.",
+    "remedy": "Khi gặp thực vật, đồ vật chưa biết tên, hãy dùng Google Lens để nhận dạng bằng ảnh."
+  },
+  {
+    "id": "C52",
+    "stage": 4,
+    "topic": "An toàn & Văn hóa Internet",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Khi tìm tài liệu ôn tập môn Toán lớp 6 trên Internet, Lan thấy một trang web yêu cầu phải điền họ tên, số điện thoại của bố mẹ và địa chỉ nhà mới cho tải tài liệu miễn phí. Lan nên xử lí như thế nào?",
+    "options": [
+      "Không cung cấp thông tin cá nhân, thoát khỏi trang web đó và tìm ở nguồn uy tín khác.",
+      "Điền đầy đủ thông tin thật của gia đình để nhanh chóng tải được tài liệu học tập.",
+      "Lấy số điện thoại và địa chỉ nhà của bạn thân để điền thay cho thông tin của mình.",
+      "Nhắn tin hỏi mật khẩu tài khoản của bố mẹ để đăng nhập vào trang web đó."
+    ],
+    "answer": 0,
+    "hint": "Không bao giờ đánh đổi thông tin cá nhân để lấy tài liệu trên trang web lạ.",
+    "explanation": "Không cung cấp thông tin cá nhân trên Internet là nguyên tắc an toàn bắt buộc để tránh bị kẻ xấu đánh cắp, lợi dụng dữ liệu.",
+    "commonMistake": "Lấy thông tin của bạn bè để điền thay (vẫn gây nguy hiểm cho bạn).",
+    "remedy": "Thoát ngay khỏi các trang web đòi hỏi dữ liệu cá nhân và tìm nguồn học liệu chính thống."
+  },
+  {
+    "id": "C53",
+    "stage": 4,
+    "topic": "Vận dụng tìm kiếm thực tiễn",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Cô giáo giao nhiệm vụ tìm hiểu về \"nguyên nhân gây ô nhiễm nguồn nước\". Khi tìm kiếm trên Google, Hùng nhận thấy có quá nhiều kết quả quảng cáo bán máy lọc nước xen lẫn vào. Hùng nên sửa từ khoá như thế nào để loại bớt các trang bán máy lọc nước?",
+    "options": [
+      "\"nguyên nhân gây ô nhiễm nguồn nước\" -máy lọc nước",
+      "\"nguyên nhân gây ô nhiễm nguồn nước\" +máy lọc nước",
+      "\"máy lọc nước\" \"ô nhiễm nguồn nước\"",
+      "nguyên nhân + máy lọc nước"
+    ],
+    "answer": 0,
+    "hint": "Dùng dấu trừ (-) trước cụm từ muốn loại bỏ.",
+    "explanation": "Thêm -máy lọc nước giúp loại trừ các trang web quảng cáo bán máy lọc nước ra khỏi kết quả tìm kiếm.",
+    "commonMistake": "Dùng dấu + khiến kết quả càng hiện nhiều máy lọc nước hơn.",
+    "remedy": "Kết hợp ngoặc kép cho chủ đề chính và dấu - để lọc bỏ quảng cáo không liên quan."
+  },
+  {
+    "id": "C54",
+    "stage": 4,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Trong tiết thực hành, nhóm của Hoa đã tìm được một đoạn văn bản giải thích rất hay về tầng ozon trên trang web chính thống. Hoa muốn đưa đoạn văn này vào tệp Word của nhóm mà không phải gõ lại từng chữ. Hoa cần thực hiện các thao tác nào?",
+    "options": [
+      "Bôi đen đoạn văn bản, nhấn Ctrl + C, mở tệp Word và nhấn Ctrl + V.",
+      "Nháy nút phải chuột vào đoạn văn bản và chọn lệnh \"Lưu hình ảnh thành...\".",
+      "Bôi đen đoạn văn bản, nhấn Ctrl + V, mở tệp Word và nhấn Ctrl + C.",
+      "Nhấn phím Enter hai lần rồi mở tệp Word để văn bản tự động chuyển sang."
+    ],
+    "answer": 0,
+    "hint": "Chọn văn bản -> Sao chép (Ctrl + C) -> Dán (Ctrl + V).",
+    "explanation": "Tổ hợp phím Ctrl + C dùng để sao chép văn bản đã chọn trên web và Ctrl + V dùng để dán văn bản đó vào tệp Word.",
+    "commonMistake": "Đảo ngược thứ tự Ctrl + V trước Ctrl + C.",
+    "remedy": "Thực hiện đúng trình tự: Bôi đen -> Ctrl + C -> Chuyển sang Word -> Ctrl + V."
+  },
+  {
+    "id": "C55",
+    "stage": 4,
+    "topic": "An toàn & Văn hóa Internet",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Khi tìm kiếm thông tin về \"cách phòng chống bệnh sốt xuất huyết\", Nam thấy hai trang web đưa ra hướng dẫn dùng thuốc trái ngược nhau. Một trang của Bộ Y tế, một trang là blog cá nhân không rõ tác giả. Nam nên tin tưởng trang nào?",
+    "options": [
+      "Tin tưởng trang của Bộ Y tế vì đây là cơ quan chính thống, có uy tín và kiểm duyệt.",
+      "Tin tưởng trang blog cá nhân vì bài viết có nhiều hình ảnh minh hoạ bắt mắt hơn.",
+      "Làm theo hướng dẫn của cả hai trang cùng một lúc để tăng hiệu quả phòng bệnh.",
+      "Chia sẻ bài viết của trang blog cá nhân lên mạng xã hội để mọi người cùng làm theo."
+    ],
+    "answer": 0,
+    "hint": "Thông tin y tế liên quan trực tiếp đến sức khoẻ nên phải chọn nguồn cơ quan nhà nước có thẩm quyền.",
+    "explanation": "Trong các vấn đề sức khoẻ, y tế, cần tuyệt đối chọn lọc thông tin từ các cơ quan chuyên môn chính thống (như Bộ Y tế), không làm theo hướng dẫn tự phát trên blog cá nhân.",
+    "commonMistake": "Bị thu hút bởi hình ảnh bắt mắt trên blog cá nhân mà bỏ qua tính xác thực.",
+    "remedy": "Ưu tiên tuyệt đối các nguồn chính thống (.gov.vn, cơ quan chuyên môn) khi tra cứu kiến thức khoa học, y tế."
+  },
+  {
+    "id": "C56",
+    "stage": 4,
+    "topic": "Vận dụng tìm kiếm thực tiễn",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Bình muốn tìm thông tin về các điểm tham quan du lịch nổi tiếng ở tỉnh Quảng Ngãi (như đảo Lý Sơn, biển Mỹ Khê) nhưng không muốn xem các bài viết về giá vé máy bay. Từ khoá nào sau đây phù hợp nhất?",
+    "options": [
+      "\"điểm tham quan du lịch Quảng Ngãi\" -vé máy bay",
+      "\"vé máy bay đi Quảng Ngãi\" +du lịch",
+      "Quảng Ngãi có gì vui và vé máy bay giá rẻ",
+      "\"đảo Lý Sơn\" + \"vé máy bay\""
+    ],
+    "answer": 0,
+    "hint": "Dùng dấu trừ (-) trước cụm từ 'vé máy bay'.",
+    "explanation": "Đặt \"điểm tham quan du lịch Quảng Ngãi\" trong ngoặc kép để tìm đúng chủ đề và thêm -vé máy bay để loại bỏ các trang bán vé máy bay.",
+    "commonMistake": "Đưa 'vé máy bay' kèm dấu cộng khiến kết quả trả về toàn trang đặt vé.",
+    "remedy": "Áp dụng linh hoạt ngoặc kép và dấu trừ để lọc nhiễu khi tìm kiếm thông tin địa phương."
+  },
+  {
+    "id": "C57",
+    "stage": 4,
+    "topic": "Tìm kiếm thông minh với AI",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Em đang dùng máy tính để tìm hiểu về \"gấu Bắc Cực\". Trong máy tính đã có sẵn một bức ảnh con gấu trên băng tan nhưng em không biết tên loài vật này. Em có thể dùng chức năng nào của Google ngay trên trình duyệt máy tính để tìm thông tin từ bức ảnh đó?",
+    "options": [
+      "Tính năng tìm kiếm bằng hình ảnh (Google Lens) bằng cách tải bức ảnh đó lên.",
+      "Tính năng lọc kết quả theo thẻ \"Tin tức\" rồi gõ tên tệp ảnh vào ô tìm kiếm.",
+      "Nháy nút phải chuột vào bức ảnh trên máy tính và chọn lệnh \"Mở liên kết trong tab mới\".",
+      "Đổi tên tệp ảnh thành gau.jpg thì máy tìm kiếm sẽ tự động hiện thông tin."
+    ],
+    "answer": 0,
+    "hint": "Trên thanh tìm kiếm Google có biểu tượng ống kính camera cho phép tải ảnh từ máy tính lên.",
+    "explanation": "Có thể sử dụng tính năng tìm kiếm bằng hình ảnh (Google Lens) ngay trên trình duyệt máy tính bằng cách tải tệp ảnh có sẵn lên để nhận dạng loài vật.",
+    "commonMistake": "Nghĩ rằng chỉ điện thoại mới dùng được tìm kiếm bằng hình ảnh.",
+    "remedy": "Nháy biểu tượng máy ảnh (Google Lens) trên trang chủ Google và tải tệp ảnh từ máy tính lên."
+  },
+  {
+    "id": "C58",
+    "stage": 4,
+    "topic": "Khai thác & Lưu trữ thông tin",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Sau khi tìm được một hình ảnh đẹp về Vịnh Hạ Long trên Google Hình ảnh, Mai muốn lưu ảnh đó vào thư mục DuLich trên máy tính. Mai đã nháy phải chuột vào ảnh nhưng lại chọn nhầm lệnh \"Sao chép địa chỉ hình ảnh\". Kết quả là gì?",
+    "options": [
+      "Không có tệp ảnh nào được lưu vào thư mục DuLich, máy chỉ sao chép đường liên kết của ảnh.",
+      "Tệp ảnh đã được tự động lưu vào thư mục DuLich với tên mặc định là HaLong.jpg.",
+      "Hình ảnh đó lập tức được chèn vào trang đầu tiên của tệp văn bản Word đang mở.",
+      "Trình duyệt web sẽ tự động đóng lại và mở thư mục DuLich trên màn hình."
+    ],
+    "answer": 0,
+    "hint": "'Địa chỉ hình ảnh' chính là đường dẫn URL trên mạng chứ không phải tệp ảnh.",
+    "explanation": "Lệnh \"Sao chép địa chỉ hình ảnh\" chỉ sao chép đường dẫn (URL) của bức ảnh vào bộ nhớ tạm chứ không tải tệp ảnh về lưu trong máy tính.",
+    "commonMistake": "Nhầm lẫn giữa sao chép địa chỉ ảnh với lưu tệp ảnh về ổ đĩa.",
+    "remedy": "Để lưu tệp ảnh vào thư mục máy tính, phải chọn 'Lưu hình ảnh thành...'."
+  },
+  {
+    "id": "C59",
+    "stage": 4,
+    "topic": "An toàn & Văn hóa Internet",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Khi tìm kiếm thông tin về \"di tích lịch sử ở Quảng Ngãi\", em thấy một bài viết có tiêu đề rất hấp dẫn nhưng nội dung bên trong lại chứa nhiều từ ngữ bạo lực và liên kết lạ. Em cần làm gì?",
+    "options": [
+      "Đóng ngay trang web đó lại, không nháy vào các liên kết lạ và báo cho bố mẹ hoặc thầy cô biết.",
+      "Nháy thử vào các liên kết lạ bên trong để kiểm tra xem máy tính có bị nhiễm virus không.",
+      "Sao chép các liên kết lạ đó gửi cho các bạn cùng lớp để cùng nhau khám phá.",
+      "Tải toàn bộ hình ảnh trong trang web đó về máy tính để làm tư liệu báo cáo."
+    ],
+    "answer": 0,
+    "hint": "Tránh xa nội dung độc hại và báo ngay cho người lớn có trách nhiệm.",
+    "explanation": "Khi gặp trang web có nội dung xấu, bạo lực hoặc liên kết lạ, cần thoát ngay, không nháy vào liên kết để tránh virus/lừa đảo và báo cho người lớn biết.",
+    "commonMistake": "Tò mò nháy thử vào các đường liên kết lạ.",
+    "remedy": "Đóng tab ngay lập tức, không nháy vào liên kết lạ và thông báo cho thầy cô/bố mẹ."
+  },
+  {
+    "id": "C60",
+    "stage": 4,
+    "topic": "Vận dụng tìm kiếm thực tiễn",
+    "level": "Vận dụng",
+    "type": "mcq",
+    "question": "Để chuẩn bị cho buổi sinh hoạt dưới cờ chủ đề \"Tự hào truyền thống quê hương\", lớp 6A cần tìm một video bài hát về quê hương để cả lớp cùng tập hát. Sau khi nhập tên bài hát vào Google và nhấn Enter, thao tác nào giúp tìm thấy video nhanh nhất?",
+    "options": [
+      "Nháy chuột vào thẻ \"Video\" ngay bên dưới ô nhập từ khoá tìm kiếm.",
+      "Nháy chuột vào thẻ \"Hình ảnh\" để xem ảnh chụp các ca sĩ biểu diễn.",
+      "Đặt tên bài hát trong dấu ngoặc đơn và nhấn tổ hợp phím Ctrl + V.",
+      "Nháy nút phải chuột vào màn hình và chọn lệnh \"Lưu hình ảnh thành...\"."
+    ],
+    "answer": 0,
+    "hint": "Dùng thẻ lọc dành riêng cho các đoạn phim và video ca nhạc.",
+    "explanation": "Nháy chuột vào thẻ \"Video\" trên trang kết quả tìm kiếm sẽ lọc riêng các video bài hát để cả lớp dễ dàng mở xem và tập hát.",
+    "commonMistake": "Chọn thẻ Hình ảnh khi đang cần tìm video có âm thanh và hình ảnh động.",
+    "remedy": "Chọn đúng thẻ lọc theo định dạng mong muốn: Văn bản (Tất cả), Hình ảnh, Video hoặc Tin tức."
+  }
+];
+
+const CHARACTERS = [
+  { id: "c1", name: "Thám tử số", avatar: "🕵️", desc: "Tinh mắt phát hiện mọi lỗ hổng dữ liệu." },
+  { id: "c2", name: "Chú mèo công nghệ", avatar: "🐱‍💻", desc: "Nhanh nhẹn, thông thạo mọi phím tắt." },
+  { id: "c3", name: "Nhà khoa học trẻ", avatar: "🧑‍🔬", desc: "Tư duy logic, phân tích chuẩn xác." },
+  { id: "c4", name: "Siêu nhân tri thức", avatar: "🦸", desc: "Bản lĩnh vượt qua mọi thử thách khó." },
+  { id: "c5", name: "Nhà thám hiểm không gian", avatar: "🧑‍🚀", desc: "Khám phá chân trời công nghệ mới." },
+  { id: "c6", name: "Robot thông minh", avatar: "🤖", desc: "Xử lý thuật toán tốc độ cao." },
+  { id: "c7", name: "Chiến binh ánh sáng", avatar: "⚔️", desc: "Bảo vệ an toàn cho thế giới mạng." },
+  { id: "c8", name: "Phù thủy thuật toán", avatar: "🧙", desc: "Biến hóa vòng lặp và điều kiện tài tình." },
+  { id: "c9", name: "Hacker mũ trắng", avatar: "🥷", desc: "Chuyên gia phòng thủ và gỡ lỗi hệ thống." },
+  { id: "c10", name: "Nhà sáng chế tương lai", avatar: "👩‍🔧", desc: "Kiến tạo giải pháp số sáng tạo." }
+];
+
+const TITLES = [
+  { minXp: 0, name: "Tập sự tri thức" },
+  { minXp: 80, name: "Nhà khám phá số" },
+  { minXp: 180, name: "Chiến binh kiến thức" },
+  { minXp: 300, name: "Chuyên gia công nghệ" },
+  { minXp: 420, name: "Hiệp sĩ tri thức" },
+  { minXp: 550, name: "Bậc thầy chinh phục" }
+];
+
+const BADGES_DEF = [
+  { id: "b_first", icon: "🌟", name: "Bước chân đầu tiên", desc: "Hoàn thành trạm thử thách đầu tiên." },
+  { id: "b_safe", icon: "🛡️", name: "Hiệp sĩ an toàn mạng", desc: "Đạt tối đa 3 sao tại Trạm 2." },
+  { id: "b_algo", icon: "🧭", name: "Chuyên gia thuật toán", desc: "Đạt tối đa 3 sao tại Trạm 3." },
+  { id: "b_debug", icon: "🔧", name: "Bậc thầy gỡ lỗi", desc: "Sửa đúng ít nhất 3 câu trong Kho ôn tập." },
+  { id: "b_master", icon: "👑", name: "Nhà vô địch Sơn Trung", desc: "Hoàn thành toàn bộ hành trình trò chơi." }
+];
+
+let soundEnabled = true;
+let selectedCharId = "c1";
+let playerState = null;
+let currentStageId = null;
+let stageQuestions = [];
+let currentQIndex = 0;
+let stageScore = 0;
+let stageCorrectCount = 0;
+let currentQuestionAnswered = false;
+let currentUserSelection = null;
+let teacherAuthenticated = false;
+
+const LESSON_KEY_HASH = btoa(encodeURIComponent(GAME_CONFIG.gameTitle + "_" + GAME_CONFIG.lessonTitle)).slice(0, 16);
+const LS_PLAYER_KEY = "ST_GAME_PLAYER_" + LESSON_KEY_HASH;
+const LS_RECORDS_KEY = "ST_GAME_RECORDS_" + LESSON_KEY_HASH;
+const LS_WEBAPP_KEY = "ST_GAME_WEBAPP_URL";
+
+function playTone(type) {
+  if (!soundEnabled) return;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = type === "wrong" ? "sawtooth" : "sine";
+    osc.frequency.setValueAtTime(type === "wrong" ? 200 : 587.33, ctx.currentTime);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+    osc.start(); osc.stop(ctx.currentTime + 0.35);
+  } catch (e) {}
+}
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  document.getElementById("btnSound").textContent = soundEnabled ? "🔊 Âm thanh: Bật" : "🔇 Âm thanh: Tắt";
+}
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("ui-subject-tag").textContent = `MÔN ${GAME_CONFIG.subject.toUpperCase()} • ${GAME_CONFIG.bookSeries.toUpperCase()}`;
+  document.getElementById("ui-game-title").textContent = GAME_CONFIG.gameTitle;
+  document.getElementById("ui-lesson-subtitle").textContent = `${GAME_CONFIG.grade} | ${GAME_CONFIG.lessonTitle}`;
+  document.getElementById("ui-story-text").textContent = GAME_CONFIG.story;
+  document.getElementById("ui-goal-text").textContent = GAME_CONFIG.goal;
+  GAME_CONFIG.classes.forEach(cls => {
+    document.getElementById("inp-class").innerHTML += `<option value="${cls}">Lớp ${cls}</option>`;
+    document.getElementById("t-filter-class").innerHTML += `<option value="${cls}">Lớp ${cls}</option>`;
+  });
+  const charGrid = document.getElementById("char-grid");
+  CHARACTERS.forEach(ch => {
+    const div = document.createElement("div");
+    div.className = "char-card" + (ch.id === selectedCharId ? " selected" : "");
+    div.onclick = () => { selectedCharId = ch.id; document.querySelectorAll(".char-card").forEach(c => c.classList.remove("selected")); div.classList.add("selected"); };
+    div.innerHTML = `<span class="char-avatar">${ch.avatar}</span><div class="char-name">${ch.name}</div><div class="char-desc">${ch.desc}</div>`;
+    charGrid.appendChild(div);
+  });
+  [...new Set(QUESTION_BANK.map(q => q.topic))].forEach(t => {
+    document.getElementById("vault-filter-topic").innerHTML += `<option value="${t}">${t}</option>`;
+  });
+  const savedUrl = localStorage.getItem(LS_WEBAPP_KEY) || GAME_CONFIG.defaultWebAppUrl;
+  if (savedUrl) { document.getElementById("inp-webapp-url").value = savedUrl; document.getElementById("syncStatusBadge").textContent = "☁️ Sẵn sàng đồng bộ"; }
+  try { playerState = JSON.parse(localStorage.getItem(LS_PLAYER_KEY)); } catch (e) { playerState = null; }
+  checkResumeAvailability();
+});
+function savePlayerState() {
+  if (!playerState) return;
+  localStorage.setItem(LS_PLAYER_KEY, JSON.stringify(playerState));
+  updateHUD();
+  upsertLocalRecord();
+}
+function checkResumeAvailability() {
+  const btnCont = document.getElementById("btn-continue");
+  const banner = document.getElementById("resume-banner");
+  document.getElementById("vault-count-home").textContent = playerState && playerState.wrongIds ? playerState.wrongIds.length : 0;
+  if (playerState && playerState.name) {
+    const done = Object.values(playerState.stageResults || {}).filter(s => s.passed).length;
+    document.getElementById("resume-name").textContent = playerState.name;
+    document.getElementById("resume-class").textContent = "Lớp " + playerState.className;
+    document.getElementById("resume-progress").textContent = `Đã vượt qua ${done}/${GAME_CONFIG.stages.length} trạm • ${playerState.stars || 0} ⭐ • ${playerState.gold || 0} 🪙`;
+    banner.style.display = "block";
+    btnCont.style.display = "inline-flex";
+  } else { banner.style.display = "none"; btnCont.style.display = "none"; }
+}
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.getElementById("player-hud").style.display = (["screen-map", "screen-quiz", "screen-vault"].includes(id) && playerState) ? "flex" : "none";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function goHome() { checkResumeAvailability(); showScreen("screen-home"); }
+function openProfileSetup() {
+  if (playerState && playerState.name && !confirm("Tạo nhân vật mới sẽ thay thế tiến trình hiện tại trên thiết bị này. Em chắc chắn chứ?")) return;
+  showScreen("screen-profile");
+}
+function confirmProfile() {
+  const name = document.getElementById("inp-name").value.trim();
+  if (!name) { alert("Em vui lòng nhập Họ và tên!"); return; }
+  const charObj = CHARACTERS.find(c => c.id === selectedCharId) || CHARACTERS[0];
+  playerState = {
+    sessionId: "SES_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+    name, className: document.getElementById("inp-class").value, studentCode: document.getElementById("inp-code").value.trim(),
+    characterId: charObj.id, characterName: charObj.name, characterAvatar: charObj.avatar,
+    startTime: Date.now(), endTime: null, hearts: GAME_CONFIG.maxHearts, gold: 20, xp: 0, stars: 0, score: 0,
+    unlockedStage: 1, stageResults: {}, answeredLog: {}, wrongIds: [], earnedBadges: [], vaultFixedCount: 0
+  };
+  savePlayerState(); goMap();
+}
+function resumeGame() { if (playerState) { updateHUD(); goMap(); } }
+function getPlayerTitle(xp) { let cur = TITLES[0].name; for (const t of TITLES) if (xp >= t.minXp) cur = t.name; return cur; }
+function updateHUD() {
+  if (!playerState) return;
+  document.getElementById("hud-avatar").textContent = playerState.characterAvatar;
+  document.getElementById("hud-name").textContent = `${playerState.name} (${playerState.characterName})`;
+  document.getElementById("hud-title").textContent = `Lớp ${playerState.className} • ${getPlayerTitle(playerState.xp)}`;
+  document.getElementById("hud-hearts").textContent = playerState.hearts;
+  document.getElementById("hud-gold").textContent = playerState.gold;
+  document.getElementById("hud-stars").textContent = playerState.stars;
+  document.getElementById("hud-level").textContent = Math.floor(playerState.xp / 100) + 1;
+  document.getElementById("hud-xp-bar").style.width = (playerState.xp % 100) + "%";
+  document.getElementById("vault-count-map").textContent = playerState.wrongIds.length;
+  document.getElementById("vault-count-home").textContent = playerState.wrongIds.length;
+}
+function goMap() {
+  updateHUD();
+  const grid = document.getElementById("stage-grid"); grid.innerHTML = "";
+  let allPassed = true;
+  GAME_CONFIG.stages.forEach(st => {
+    const qs = QUESTION_BANK.filter(q => q.stage === st.id);
+    const res = playerState.stageResults[st.id];
+    const isUnlocked = st.id <= playerState.unlockedStage;
+    const isPassed = res && res.passed;
+    if (!isPassed) allPassed = false;
+    const stars = res ? res.stars : 0;
+    const minPass = Math.ceil(qs.length * GAME_CONFIG.passRatio);
+    const card = document.createElement("div");
+    card.className = "stage-card" + (!isUnlocked ? " locked" : (isPassed ? " completed" : ""));
+    card.innerHTML = `
+      <div>
+        <div class="stage-header"><span class="stage-icon">${st.icon}</span><span class="stage-stars">${"⭐".repeat(stars) + "☆".repeat(3 - stars)}</span></div>
+        <span class="stage-badge">${st.topic}</span>
+        <h3>${st.name}</h3>
+        <p style="font-size:18px; color:#334155; margin:8px 0;">${st.desc}</p>
+        <p style="font-size:17px; color:#475569;">📝 <strong>${qs.length} câu</strong> • Cần đúng tối thiểu <strong>${minPass}/${qs.length}</strong></p>
+      </div>
+      <div style="margin-top:14px;">
+        ${isUnlocked ? `<button class="btn ${isPassed ? 'btn-success' : 'btn-primary'}" style="width:100%;" onclick="startStage(${st.id})">${isPassed ? '🔄 Luyện lại trạm' : '⚔️ Chinh phục trạm'}</button>` : `<button class="btn" style="width:100%; background:#cbd5e1; color:#475569;" disabled>🔒 Chưa mở khóa</button>`}
+      </div>`;
+    grid.appendChild(card);
+  });
+  document.getElementById("btn-finish-journey").style.display = allPassed ? "inline-flex" : "none";
+  showScreen("screen-map");
+}
+function startStage(stageId) {
+  if (playerState.hearts <= 0) { alert("Em đã hết Tim! Hãy vào Kho ôn tập để hồi tim nhé."); openReviewVault(); return; }
+  currentStageId = stageId;
+  stageQuestions = QUESTION_BANK.filter(q => q.stage === stageId);
+  currentQIndex = 0; stageScore = 0; stageCorrectCount = 0;
+  document.getElementById("quiz-stage-title").textContent = GAME_CONFIG.stages.find(s => s.id === stageId).name;
+  showScreen("screen-quiz"); renderQuestion();
+}
+function exitStageToMap() { if (confirm("Quay về Bản đồ hành trình?")) goMap(); }
+function renderQuestion() {
+  const q = stageQuestions[currentQIndex];
+  currentQuestionAnswered = false; currentUserSelection = null;
+  document.getElementById("quiz-counter").textContent = `Câu ${currentQIndex + 1}/${stageQuestions.length}`;
+  document.getElementById("quiz-progress-bar").style.width = `${((currentQIndex + 1) / stageQuestions.length) * 100}%`;
+  document.getElementById("q-code").textContent = `Mã: ${q.id}`;
+  document.getElementById("q-topic").textContent = q.topic;
+  document.getElementById("q-level").textContent = q.level;
+  const tNames = { mcq: "Trắc nghiệm 1 đáp án", multi: "Chọn nhiều đáp án", tf_multi: "Đúng/Sai nhiều ý", order: "Sắp xếp thứ tự", match: "Ghép đôi", fill: "Điền đáp án" };
+  document.getElementById("q-type-label").textContent = tNames[q.type] || q.type;
+  document.getElementById("question-text").textContent = q.question;
+  document.getElementById("hint-display").style.display = "none";
+  document.getElementById("feedback-box").style.display = "none";
+  document.getElementById("btn-submit-answer").style.display = "inline-flex";
+  document.getElementById("btn-next-question").style.display = "none";
+  document.getElementById("pu-hint").disabled = false;
+  document.getElementById("pu-5050").disabled = (q.type !== "mcq");
+  const area = document.getElementById("answer-area"); area.innerHTML = "";
+  const letters = ["A", "B", "C", "D", "E"];
+  if (q.type === "mcq") {
+    const list = document.createElement("div"); list.className = "options-list";
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement("button"); btn.className = "option-btn"; btn.dataset.idx = idx;
+      btn.innerHTML = `<strong>${letters[idx]}.</strong> <span>${opt}</span>`;
+      btn.onclick = () => { if (currentQuestionAnswered) return; document.querySelectorAll(".option-btn").forEach(b => b.classList.remove("selected")); btn.classList.add("selected"); currentUserSelection = idx; };
+      list.appendChild(btn);
+    });
+    area.appendChild(list);
+  }
+}
+function usePowerup(type) {
+  if (currentQuestionAnswered) return;
+  const costs = { hint: 15, "5050": 25, skip: 30, heal: 35 };
+  if (playerState.gold < costs[type]) { alert(`Em cần ${costs[type]} 🪙 Vàng!`); return; }
+  const q = stageQuestions[currentQIndex];
+  if (type === "hint") { playerState.gold -= 15; document.getElementById("hint-text").textContent = q.hint; document.getElementById("hint-display").style.display = "block"; document.getElementById("pu-hint").disabled = true; }
+  else if (type === "5050" && q.type === "mcq") {
+    playerState.gold -= 25;
+    Array.from(document.querySelectorAll(".option-btn")).filter(b => parseInt(b.dataset.idx) !== q.answer).sort(() => Math.random() - 0.5).slice(0, 2).forEach(b => b.classList.add("eliminated"));
+    document.getElementById("pu-5050").disabled = true;
+  } else if (type === "skip") {
+    playerState.gold -= 30; if (!playerState.wrongIds.includes(q.id)) playerState.wrongIds.push(q.id); savePlayerState(); nextQuestion(); return;
+  } else if (type === "heal") {
+    if (playerState.hearts >= GAME_CONFIG.maxHearts) { alert("Tim đã đầy!"); return; }
+    playerState.gold -= 35; playerState.hearts++;
+  }
+  savePlayerState();
+}
+function submitAnswer() {
+  if (currentQuestionAnswered) return;
+  const q = stageQuestions[currentQIndex];
+  if (q.type === "mcq" && currentUserSelection === null) {
+    alert("Em hãy chọn một đáp án trước khi xác nhận!"); return;
+  }
+  let isCorrect = currentUserSelection === q.answer;
+  let userAnsText = q.options[currentUserSelection];
+  let correctAnsText = q.options[q.answer];
+  document.querySelectorAll(".option-btn").forEach(b => {
+    const i = parseInt(b.dataset.idx);
+    if (i === q.answer) b.classList.add("correct");
+    else if (i === currentUserSelection && !isCorrect) b.classList.add("wrong");
+  });
+  currentQuestionAnswered = true;
+  document.getElementById("btn-submit-answer").style.display = "none";
+  document.getElementById("btn-next-question").style.display = "inline-flex";
+  const prevLog = playerState.answeredLog[q.id];
+  const alreadyRewarded = prevLog && prevLog.rewarded;
+  playerState.answeredLog[q.id] = { questionId: q.id, topic: q.topic, level: q.level, isCorrect, userAnswer: userAnsText, correctAnswer: correctAnsText, attempts: (prevLog ? prevLog.attempts : 0) + 1, rewarded: alreadyRewarded || isCorrect };
+  const fbBox = document.getElementById("feedback-box");
+  if (isCorrect) {
+    playTone("correct"); stageCorrectCount++; stageScore += 10;
+    if (!alreadyRewarded) { playerState.gold += 10; playerState.xp += 20; playerState.score += 10; }
+    fbBox.className = "feedback-box correct";
+    document.getElementById("fb-title").innerHTML = "🎉 CHÍNH XÁC!";
+    document.getElementById("fb-content").innerHTML = `<p><strong>✅ Đáp án đúng:</strong> ${correctAnsText}</p><p><strong>💡 Giải thích:</strong> ${q.explanation}</p>`;
+  } else {
+    playTone("wrong"); playerState.hearts = Math.max(0, playerState.hearts - 1);
+    if (!playerState.wrongIds.includes(q.id)) playerState.wrongIds.push(q.id);
+    fbBox.className = "feedback-box wrong";
+    document.getElementById("fb-title").innerHTML = "💪 CHƯA CHÍNH XÁC! CÙNG RÚT KINH NGHIỆM NHÉ!";
+    document.getElementById("fb-content").innerHTML = `<p><strong>✅ Đáp án đúng:</strong> ${correctAnsText}</p><p><strong>📖 Giải thích:</strong> ${q.explanation}</p><p><strong>⚠️ Lỗi sai thường gặp:</strong> ${q.commonMistake}</p><p><strong>🛠️ Củng cố:</strong> ${q.remedy}</p>`;
+  }
+  fbBox.style.display = "block"; savePlayerState();
+  document.getElementById("btn-next-question").textContent = playerState.hearts <= 0 ? "📚 Hết tim – Vào Kho ôn tập" : (currentQIndex === stageQuestions.length - 1 ? "🏁 Hoàn thành trạm" : "➡️ Câu tiếp theo");
+}
+function nextQuestion() {
+  if (playerState.hearts <= 0) { openReviewVault(); return; }
+  if (currentQIndex < stageQuestions.length - 1) { currentQIndex++; renderQuestion(); }
+  else completeStage();
+}
+function completeStage() {
+  playTone("win");
+  const total = stageQuestions.length, ratio = stageCorrectCount / total, passed = ratio >= GAME_CONFIG.passRatio;
+  const stars = ratio >= 0.9 ? 3 : (ratio >= 0.75 ? 2 : (passed ? 1 : 0));
+  const prev = playerState.stageResults[currentStageId];
+  playerState.stageResults[currentStageId] = { passed: (prev && prev.passed) || passed, correct: prev ? Math.max(prev.correct, stageCorrectCount) : stageCorrectCount, total, stars: prev ? Math.max(prev.stars, stars) : stars };
+  playerState.stars = Object.values(playerState.stageResults).reduce((s, r) => s + r.stars, 0);
+  if (passed) {
+    playerState.gold += 25; playerState.xp += 50;
+    if (currentStageId === playerState.unlockedStage && currentStageId < GAME_CONFIG.stages.length) playerState.unlockedStage++;
+    if (!playerState.earnedBadges.includes("b_first")) playerState.earnedBadges.push("b_first");
+    if (currentStageId === 2 && stars === 3 && !playerState.earnedBadges.includes("b_safe")) playerState.earnedBadges.push("b_safe");
+    if (currentStageId === 3 && stars === 3 && !playerState.earnedBadges.includes("b_algo")) playerState.earnedBadges.push("b_algo");
+  }
+  const allPassed = GAME_CONFIG.stages.every(s => playerState.stageResults[s.id] && playerState.stageResults[s.id].passed);
+  if (allPassed && !playerState.endTime) { playerState.endTime = Date.now(); if (!playerState.earnedBadges.includes("b_master")) playerState.earnedBadges.push("b_master"); }
+  savePlayerState(); syncToGoogleSheets();
+  alert(passed ? `🎊 Hoàn thành Trạm ${currentStageId}! Đúng ${stageCorrectCount}/${total} câu (${stars} ⭐).` : `💡 Em đạt ${stageCorrectCount}/${total} câu. Hãy vào Kho ôn tập củng cố và thử lại nhé!`);
+  if (allPassed) showFinalSummary(); else goMap();
+}
+function openReviewVault() { if (!playerState) { openProfileSetup(); return; } updateHUD(); renderVaultList(); showScreen("screen-vault"); }
+function renderVaultList() {
+  const container = document.getElementById("vault-list");
+  const ft = document.getElementById("vault-filter-topic").value;
+  let list = QUESTION_BANK.filter(q => playerState.wrongIds.includes(q.id));
+  if (ft !== "ALL") list = list.filter(q => q.topic === ft);
+  if (!list.length) { container.innerHTML = `<div class="card" style="text-align:center;"><h3>🌟 Không còn câu sai nào trong Kho ôn tập!</h3></div>`; return; }
+  container.innerHTML = list.map(q => `
+    <div class="card" style="border-color:#f59e0b;">
+      <p><strong>[${q.id} - ${q.topic}]</strong> ${q.question}</p>
+      <p style="font-size:18px; color:#b45309; margin:8px 0;">⚠️ ${q.commonMistake} | 💡 ${q.remedy}</p>
+      <div id="vp-${q.id}"><button class="btn btn-success" onclick="practiceVault('${q.id}')">✍️ Ôn lại để hồi +1 ❤️ Tim</button></div>
+    </div>`).join("");
+}
+function practiceVault(qId) {
+  const q = QUESTION_BANK.find(x => x.id === qId);
+  const box = document.getElementById(`vp-${qId}`);
+  const letters = ["A", "B", "C", "D"];
+  box.innerHTML = q.options.map((o, i) => `<button class="option-btn" style="margin-bottom:6px; width:100%;" onclick="checkVaultAnswer('${qId}', ${i})"><strong>${letters[i]}.</strong> <span>${o}</span></button>`).join("");
+}
+function checkVaultAnswer(qId, idx) {
+  const q = QUESTION_BANK.find(x => x.id === qId);
+  if (idx === q.answer) {
+    masterVault(qId);
+  } else {
+    alert("Chưa đúng! " + q.explanation);
+  }
+}
+function masterVault(qId) {
+  playTone("correct");
+  playerState.wrongIds = playerState.wrongIds.filter(id => id !== qId);
+  playerState.hearts = Math.min(GAME_CONFIG.maxHearts, playerState.hearts + 1);
+  playerState.vaultFixedCount = (playerState.vaultFixedCount || 0) + 1;
+  if (playerState.vaultFixedCount >= 3 && !playerState.earnedBadges.includes("b_debug")) playerState.earnedBadges.push("b_debug");
+  savePlayerState(); syncToGoogleSheets(); renderVaultList();
+}
+function showFinalSummary() {
+  const logs = Object.values(playerState.answeredLog), right = logs.filter(l => l.isCorrect).length;
+  const acc = logs.length ? Math.round((right / logs.length) * 100) : 0;
+  document.getElementById("summary-header-info").innerHTML = `<h3>${playerState.characterAvatar} ${playerState.name} — Lớp ${playerState.className}</h3><p>Danh hiệu: <strong>${getPlayerTitle(playerState.xp)}</strong></p>`;
+  document.getElementById("summary-kpis").innerHTML = `
+    <div class="kpi-card"><div class="kpi-value">${playerState.score}</div><div class="kpi-label">Tổng điểm</div></div>
+    <div class="kpi-card"><div class="kpi-value">${right}/${logs.length} (${acc}%)</div><div class="kpi-label">Tỷ lệ đúng</div></div>
+    <div class="kpi-card"><div class="kpi-value">${playerState.stars} ⭐</div><div class="kpi-label">Tổng sao</div></div>`;
+  document.getElementById("summary-stages").innerHTML = GAME_CONFIG.stages.map(st => {
+    const r = playerState.stageResults[st.id] || { correct: 0, total: 1, stars: 0 };
+    const pct = Math.round((r.correct / r.total) * 100);
+    return `<div class="bar-chart-row"><div class="bar-chart-label"><span>${st.name}</span><span>${r.correct}/${r.total} (${pct}%)</span></div><div class="bar-chart-track"><div class="bar-right" style="width:${pct}%"></div></div></div>`;
+  }).join("");
+  document.getElementById("summary-pedagogy").innerHTML = `<p>Em đã hoàn thành xuất sắc hành trình khám phá Bài 7: Tìm kiếm thông tin trên Internet! Hãy mở <strong>Kho ôn tập</strong> nếu còn câu hỏi cần củng cố thêm.</p>`;
+  showScreen("screen-summary");
+}
+function confirmResetGame() { if (confirm("Xóa tiến trình để chơi lại từ đầu?")) { localStorage.removeItem(LS_PLAYER_KEY); playerState = null; goHome(); } }
+function openModal(id) {
+  if (id === "modal-badges") {
+    const earned = playerState ? playerState.earnedBadges : [];
+    document.getElementById("badges-list").innerHTML = BADGES_DEF.map(b => `<div style="padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-bottom:8px;">${b.icon} <strong>${b.name}</strong> ${earned.includes(b.id)?"✅":"🔒"} - ${b.desc}</div>`).join("");
+  }
+  document.getElementById(id).classList.add("active");
+}
+function closeModal(id) { document.getElementById(id).classList.remove("active"); }
+function getAllLocalRecords() { try { return JSON.parse(localStorage.getItem(LS_RECORDS_KEY)) || []; } catch (e) { return []; } }
+function upsertLocalRecord() {
+  if (!playerState) return;
+  const records = getAllLocalRecords(), logs = Object.values(playerState.answeredLog), right = logs.filter(l => l.isCorrect).length;
+  const allPassed = GAME_CONFIG.stages.every(s => playerState.stageResults[s.id] && playerState.stageResults[s.id].passed);
+  const rec = {
+    sessionId: playerState.sessionId, gameTitle: GAME_CONFIG.gameTitle, lessonTitle: GAME_CONFIG.lessonTitle,
+    studentCode: playerState.studentCode, name: playerState.name, className: playerState.className, characterName: playerState.characterName,
+    score: playerState.score, correctCount: right, wrongCount: logs.length - right, totalAnswered: logs.length,
+    accuracy: logs.length ? Math.round((right / logs.length) * 100) : 0, stars: playerState.stars, xp: playerState.xp,
+    level: Math.floor(playerState.xp / 100) + 1, title: getPlayerTitle(playerState.xp), completed: allPassed,
+    durationSec: Math.max(1, Math.round(((playerState.endTime || Date.now()) - playerState.startTime) / 1000)),
+    updatedAt: new Date().toISOString(), answeredLog: playerState.answeredLog
+  };
+  const idx = records.findIndex(r => r.sessionId === rec.sessionId);
+  if (idx >= 0) records[idx] = rec; else records.push(rec);
+  localStorage.setItem(LS_RECORDS_KEY, JSON.stringify(records));
+  return rec;
+}
+function saveWebAppConfig() {
+  const url = document.getElementById("inp-webapp-url").value.trim();
+  localStorage.setItem(LS_WEBAPP_KEY, url);
+  document.getElementById("syncStatusBadge").textContent = url ? "☁️ Đã cấu hình Cloud" : "💾 Lưu cục bộ";
+  closeModal("modal-config");
+}
+async function syncToGoogleSheets() {
+  const rec = upsertLocalRecord();
+  const url = localStorage.getItem(LS_WEBAPP_KEY) || GAME_CONFIG.defaultWebAppUrl;
+  if (!rec || !url) return;
+  try {
+    const res = await fetch(url, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "submitResult", payload: rec }) });
+    const d = await res.json();
+    if (d && d.status === "success") document.getElementById("syncStatusBadge").textContent = "✅ Đã đồng bộ Cloud";
+  } catch (e) { document.getElementById("syncStatusBadge").textContent = "⚠️ Lưu cục bộ"; }
+}
+async function fetchTeacherDataFromCloud() {
+  const url = localStorage.getItem(LS_WEBAPP_KEY) || GAME_CONFIG.defaultWebAppUrl;
+  if (!url) { alert("Chưa cấu hình URL Web App!"); renderTeacherDashboard(); return; }
+  try {
+    const res = await fetch(`${url}?action=getResults&lesson=${encodeURIComponent(GAME_CONFIG.lessonTitle)}`);
+    const d = await res.json();
+    if (d && Array.isArray(d.records)) { localStorage.setItem(LS_RECORDS_KEY, JSON.stringify(d.records)); renderTeacherDashboard(); }
+  } catch (e) { alert("Lỗi kết nối: " + e.message); }
+}
+function openTeacherAuth() {
+  if (!teacherAuthenticated) {
+    const pin = prompt("Nhập mã truy cập Giáo viên (Võ Thị Thanh):");
+    if (pin !== GAME_CONFIG.teacherPasscode) { if (pin !== null) alert("Sai mã truy cập!"); return; }
+    teacherAuthenticated = true;
+  }
+  renderTeacherDashboard(); showScreen("screen-teacher");
+}
+function switchTeacherTab(idx, btn) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+  btn.classList.add("active"); document.getElementById(`t-tab-${idx}`).classList.add("active");
+}
+function getFilteredTeacherRecords() {
+  const fc = document.getElementById("t-filter-class").value, fs = document.getElementById("t-filter-status").value, q = document.getElementById("t-search-student").value.trim().toLowerCase();
+  return getAllLocalRecords().filter(r => (fc === "ALL" || r.className === fc) && (fs === "ALL" || (fs === "COMPLETED" ? r.completed : !r.completed)) && (!q || r.name.toLowerCase().includes(q)));
+}
+function renderTeacherDashboard() {
+  const records = getFilteredTeacherRecords();
+  const totalQ = records.reduce((s, r) => s + r.totalAnswered, 0), totalR = records.reduce((s, r) => s + r.correctCount, 0);
+  document.getElementById("t-kpi-grid").innerHTML = `
+    <div class="kpi-card"><div class="kpi-value">${records.length}</div><div class="kpi-label">Học sinh tham gia</div></div>
+    <div class="kpi-card"><div class="kpi-value">${records.filter(r => r.completed).length}/${records.length}</div><div class="kpi-label">Hoàn thành</div></div>
+    <div class="kpi-card"><div class="kpi-value">${totalQ ? Math.round((totalR/totalQ)*100) : 0}%</div><div class="kpi-label">Tỷ lệ đúng TB</div></div>`;
+  const byClass = {}; records.forEach(r => { (byClass[r.className] = byClass[r.className] || []).push(r); });
+  document.getElementById("t-class-cards").innerHTML = Object.entries(byClass).map(([cls, list]) => `<div class="stage-card" style="padding:14px;"><h3>Lớp ${cls}</h3><p>Tham gia: ${list.length} HS • Hoàn thành: ${list.filter(x=>x.completed).length}</p></div>`).join("") || "<p>Chưa có dữ liệu thực tế.</p>";
+  const topicAgg = {}, qAgg = {};
+  QUESTION_BANK.forEach(q => { qAgg[q.id] = { ...q, att: 0, right: 0, wrong: 0 }; if (!topicAgg[q.topic]) topicAgg[q.topic] = { topic: q.topic, right: 0, wrong: 0, remedy: q.remedy }; });
+  records.forEach(r => Object.values(r.answeredLog || {}).forEach(l => {
+    if (topicAgg[l.topic]) { l.isCorrect ? topicAgg[l.topic].right++ : topicAgg[l.topic].wrong++; }
+    if (qAgg[l.questionId]) { qAgg[l.questionId].att++; l.isCorrect ? qAgg[l.questionId].right++ : qAgg[l.questionId].wrong++; }
+  }));
+  const tArr = Object.values(topicAgg).map(t => ({ ...t, total: t.right + t.wrong, rate: (t.right + t.wrong) ? Math.round((t.wrong / (t.right + t.wrong)) * 100) : 0 })).sort((a, b) => b.rate - a.rate);
+  document.getElementById("t-tab0-content").innerHTML = `<table><thead><tr><th>Chủ đề</th><th>Lượt sai</th><th>Tỷ lệ sai</th><th>Gợi ý hỗ trợ</th></tr></thead><tbody>${tArr.map(t => `<tr><td>${t.topic}</td><td>${t.wrong}/${t.total}</td><td>${t.rate}%</td><td>${t.remedy}</td></tr>`).join("")}</tbody></table>`;
+  const ranked = [...records].sort((a, b) => b.score - a.score || b.accuracy - a.accuracy || a.durationSec - b.durationSec);
+  document.getElementById("t-tab1-content").innerHTML = `<table><thead><tr><th>Hạng</th><th>Họ tên</th><th>Lớp</th><th>Điểm</th><th>Đúng/Sai</th><th>Tỷ lệ</th><th>Sao</th></tr></thead><tbody>${ranked.map((r, i) => `<tr><td>#${i+1}</td><td>${r.name}</td><td>${r.className}</td><td>${r.score}</td><td>${r.correctCount}/${r.wrongCount}</td><td>${r.accuracy}%</td><td>${r.stars} ⭐</td></tr>`).join("")}</tbody></table>`;
+  document.getElementById("t-tab2-content").innerHTML = `<table><thead><tr><th>Họ tên</th><th>Lớp</th><th>Điểm</th><th>Chi tiết</th></tr></thead><tbody>${records.map(r => `<tr><td>${r.name}</td><td>${r.className}</td><td>${r.score}</td><td><button class="btn btn-outline" style="padding:4px 8px; font-size:16px;" onclick="inspectStudent('${r.sessionId}')">Xem</button></td></tr>`).join("")}</tbody></table>`;
+  document.getElementById("t-tab3-content").innerHTML = totalQ ? tArr.map(t => `<div class="bar-chart-row"><div class="bar-chart-label"><span>${t.topic}</span><span>Sai: ${t.rate}%</span></div><div class="bar-chart-track"><div class="bar-wrong" style="width:${t.rate}%"></div><div class="bar-right" style="width:${100-t.rate}%"></div></div></div>`).join("") : "<p>Chưa có dữ liệu vẽ biểu đồ.</p>";
+  document.getElementById("t-tab4-content").innerHTML = `<table><thead><tr><th>Mã</th><th>Câu hỏi</th><th>Lượt</th><th>Đúng/Sai</th><th>Tỷ lệ sai</th></tr></thead><tbody>${Object.values(qAgg).map(q => `<tr><td>${q.id}</td><td>${q.question}</td><td>${q.att}</td><td>${q.right}/${q.wrong}</td><td>${q.att?Math.round((q.wrong/q.att)*100):0}%</td></tr>`).join("")}</tbody></table>`;
+}
+function inspectStudent(sid) {
+  const r = getAllLocalRecords().find(x => x.sessionId === sid); if (!r) return;
+  document.getElementById("t-student-detail-box").innerHTML = `<table><thead><tr><th>Mã</th><th>Kết quả</th><th>Chọn</th><th>Đúng</th></tr></thead><tbody>${Object.values(r.answeredLog||{}).map(l=>`<tr><td>${l.questionId}</td><td>${l.isCorrect?"✅":"❌"}</td><td>${l.userAnswer}</td><td>${l.correctAnswer}</td></tr>`).join("")}</tbody></table>`;
+}
+function exportCSV(type) {
+  const records = getFilteredTeacherRecords(); if (!records.length) { alert("Chưa có dữ liệu!"); return; }
+  const rows = [["STT", "Ho_Ten", "Lop", "Diem", "Cau_Dung", "Cau_Sai", "Ty_Le(%)"]];
+  records.forEach((r, i) => rows.push([i+1, r.name, r.className, r.score, r.correctCount, r.wrongCount, r.accuracy]));
+  const csv = "\uFEFF" + rows.map(e => e.map(c => `"${String(c??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" })); a.download = `BaoCao_${type}.csv`; a.click();
+}
+</script>
+</body>
+</html>
